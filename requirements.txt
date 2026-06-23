@@ -1,0 +1,8 @@
+# 機械学習 自走学習プロジェクト — 道具リスト
+# クローン後の環境再現用。SETUP.md の手順で入れる。
+pandas==3.0.3
+numpy==2.5.0
+scikit-learn==1.9.0
+matplotlib==3.11.0
+jupyterlab==4.6.0
+ipykernel==7.3.0
