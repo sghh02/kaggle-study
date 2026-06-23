@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学習サマリー — 2026-06-22（初回）</title>
+<style>
+  :root{
+    --bg:#f5f6fb; --card:#ffffff; --ink:#1f2433; --muted:#6b7280;
+    --line:#e6e8f0; --accent:#5b54e6; --accent-soft:#ecebff;
+    --good:#16a34a; --good-soft:#e7f6ec; --gray:#94a3b8; --gray-soft:#eef1f5;
+    --amber:#d97706; --amber-soft:#fdf1df; --teal:#0d9488; --teal-soft:#e6f7f4;
+    --shadow:0 6px 22px rgba(31,36,51,.07);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",
+      "Segoe UI",sans-serif; line-height:1.75; letter-spacing:.01em;
+  }
+  .wrap{max-width:880px; margin:0 auto; padding:32px 20px 80px}
+
+  /* hero */
+  .hero{
+    background:linear-gradient(135deg,#5b54e6,#7c6cf0 55%,#9b8bf5);
+    color:#fff; border-radius:20px; padding:30px 32px; box-shadow:var(--shadow);
+  }
+  .hero .date{font-size:.82rem; opacity:.85; letter-spacing:.06em}
+  .hero h1{margin:.25em 0 .15em; font-size:1.6rem; line-height:1.4}
+  .hero p{margin:.4em 0 0; opacity:.92; font-size:.96rem}
+  .hero .goal{
+    display:inline-block; margin-top:16px; background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.35); padding:6px 14px; border-radius:999px;
+    font-size:.84rem; font-weight:600;
+  }
+
+  /* section */
+  section{margin-top:38px}
+  h2{
+    font-size:1.18rem; margin:0 0 16px; padding-left:12px;
+    border-left:5px solid var(--accent); line-height:1.3;
+  }
+  .lead{color:var(--muted); font-size:.92rem; margin:-6px 0 18px}
+
+  /* one-line summary */
+  .summary{
+    background:var(--card); border:1px solid var(--line); border-radius:16px;
+    padding:22px 24px; box-shadow:var(--shadow); font-size:1.02rem;
+  }
+  .summary b{color:var(--accent)}
+
+  /* timeline */
+  .flow{position:relative; margin-left:8px; padding-left:30px;
+    border-left:2px dashed var(--line)}
+  .step{position:relative; margin-bottom:22px}
+  .step:last-child{margin-bottom:0}
+  .step .dot{
+    position:absolute; left:-41px; top:2px; width:26px; height:26px; border-radius:50%;
+    background:var(--accent); color:#fff; font-size:.8rem; font-weight:700;
+    display:flex; align-items:center; justify-content:center; box-shadow:0 0 0 4px var(--accent-soft);
+    z-index:1;
+  }
+  .step .card{
+    background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:14px 18px; box-shadow:var(--shadow); cursor:pointer;
+    transition:transform .15s, box-shadow .15s, border-color .15s;
+  }
+  .step .card:hover{transform:translateY(-2px); border-color:var(--accent);
+    box-shadow:0 10px 28px rgba(91,84,230,.16)}
+  .step h3{margin:0 0 4px; font-size:1rem}
+  .step p{margin:0; color:var(--muted); font-size:.9rem}
+  .step .why{display:block; margin-top:8px; font-size:.82rem; color:var(--accent); font-weight:600}
+  .step .more{margin-top:10px; display:inline-flex; align-items:center; gap:5px;
+    font-size:.76rem; font-weight:700; color:var(--accent); background:var(--accent-soft);
+    padding:4px 11px; border-radius:999px}
+
+  /* concept cards */
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px}
+  .concept{
+    background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:16px 18px; box-shadow:var(--shadow);
+  }
+  .concept .tag{
+    font-size:.72rem; font-weight:700; color:var(--accent); background:var(--accent-soft);
+    padding:3px 9px; border-radius:999px; display:inline-block; margin-bottom:8px;
+  }
+  .concept h3{margin:0 0 5px; font-size:1rem}
+  .concept p{margin:0; font-size:.88rem; color:var(--muted)}
+
+  /* example panel */
+  .panel{
+    background:var(--accent-soft); border:1px solid #d9d6ff; border-radius:16px;
+    padding:20px 22px;
+  }
+  .panel h3{margin:0 0 10px; font-size:1rem; color:var(--accent)}
+  .chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:6px}
+  .chip{background:#fff; border:1px solid #d9d6ff; border-radius:999px;
+    padding:5px 12px; font-size:.84rem}
+  .chip.label{background:var(--good-soft); border-color:#bfe6c9; color:#0f7a35; font-weight:600}
+
+  /* decision tree */
+  .tree{background:var(--card); border:1px solid var(--line); border-radius:16px;
+    padding:22px; box-shadow:var(--shadow); overflow-x:auto}
+  .node{margin:0}
+  .qbox{
+    display:inline-block; background:#fff; border:2px solid var(--accent); color:var(--accent);
+    font-weight:700; border-radius:10px; padding:8px 14px; font-size:.92rem;
+  }
+  .branch{margin:8px 0 0 22px; padding-left:20px; border-left:2px solid var(--line)}
+  .blabel{font-size:.78rem; color:var(--muted); font-weight:600; margin:10px 0 4px}
+  .leaf{display:inline-block; border-radius:999px; padding:5px 14px; font-size:.86rem; font-weight:700}
+  .leaf.yes{background:var(--good-soft); color:#0f7a35; border:1px solid #bfe6c9}
+  .leaf.no{background:var(--gray-soft); color:#475569; border:1px solid #d7dde6}
+  .treenote{margin-top:14px; font-size:.84rem; color:var(--muted)}
+  .treenote b{color:var(--ink)}
+
+  /* pitfalls */
+  .callout{
+    background:var(--amber-soft); border:1px solid #f3dcb6; border-left:5px solid var(--amber);
+    border-radius:12px; padding:12px 16px; margin-bottom:10px; font-size:.9rem;
+  }
+  .callout b{color:var(--amber)}
+
+  /* quote */
+  .quote{
+    background:linear-gradient(135deg,#1f2433,#2c3350); color:#fff; border-radius:16px;
+    padding:24px 26px; box-shadow:var(--shadow); position:relative;
+  }
+  .quote .mark{font-size:2.4rem; line-height:0; opacity:.3; position:absolute; top:22px; left:18px}
+  .quote p{margin:0 0 0 26px; font-size:1.02rem}
+  .quote .fuel{color:#ffd479; font-weight:700}
+  .quote .engine{color:#9be8b0; font-weight:700}
+  .quote small{display:block; margin:14px 0 0 26px; opacity:.7; font-size:.8rem}
+
+  /* next */
+  .next li{margin-bottom:10px; list-style:none}
+  .next ul{padding-left:0}
+  .next .num{display:inline-block; width:24px; height:24px; border-radius:7px;
+    background:var(--accent); color:#fff; text-align:center; font-weight:700;
+    font-size:.82rem; line-height:24px; margin-right:10px; vertical-align:middle}
+
+  footer{margin-top:46px; text-align:center; color:var(--muted); font-size:.8rem}
+
+  /* ===== modal ===== */
+  .modal{position:fixed; inset:0; display:none; z-index:50}
+  .modal.open{display:block}
+  .modal-backdrop{position:absolute; inset:0; background:rgba(20,22,34,.55); backdrop-filter:blur(3px)}
+  .modal-box{
+    position:relative; max-width:660px; margin:5vh auto; width:calc(100% - 32px);
+    background:var(--card); border-radius:18px; box-shadow:0 24px 60px rgba(0,0,0,.3);
+    max-height:90vh; overflow:hidden; display:flex; flex-direction:column;
+    animation:pop .22s ease;
+  }
+  @keyframes pop{from{opacity:0; transform:translateY(12px) scale(.98)} to{opacity:1; transform:none}}
+  .modal-head{display:flex; align-items:center; gap:12px; padding:18px 22px; border-bottom:1px solid var(--line)}
+  .modal-head .mnum{width:30px; height:30px; border-radius:50%; background:var(--accent); color:#fff;
+    font-weight:700; display:flex; align-items:center; justify-content:center; flex:0 0 auto}
+  .modal-head .mtitle{font-weight:700; font-size:1.05rem; line-height:1.35}
+  .modal-close{margin-left:auto; border:none; background:var(--gray-soft); width:32px; height:32px;
+    border-radius:50%; font-size:1.2rem; cursor:pointer; color:#475569; line-height:1; flex:0 0 auto}
+  .modal-close:hover{background:#e1e6ee}
+  .modal-body{padding:20px 22px; overflow-y:auto}
+
+  .d-lead{color:var(--muted); margin:0 0 4px; font-size:.95rem}
+  .d-block{border-radius:12px; padding:12px 16px; margin:14px 0; font-size:.92rem; border-left:4px solid}
+  .d-block:last-child{margin-bottom:2px}
+  .d-block .dl{font-size:.72rem; font-weight:800; letter-spacing:.05em; display:block; margin-bottom:5px}
+  .d-block p{margin:.3em 0}
+  .d-block.problem{background:var(--amber-soft); border-color:var(--amber)} .d-block.problem .dl{color:var(--amber)}
+  .d-block.example{background:var(--accent-soft); border-color:var(--accent)} .d-block.example .dl{color:var(--accent)}
+  .d-block.analogy{background:var(--teal-soft); border-color:var(--teal)} .d-block.analogy .dl{color:var(--teal)}
+  .d-block.insight{background:var(--good-soft); border-color:var(--good)} .d-block.insight .dl{color:#0f7a35}
+  .code{font-family:ui-monospace,Menlo,Consolas,monospace; background:#eef0f6; padding:2px 6px;
+    border-radius:5px; font-size:.85em}
+  .vs{display:flex; gap:10px; flex-wrap:wrap; margin:10px 0}
+  .vs > div{flex:1; min-width:180px; background:#fff; border:1px solid var(--line); border-radius:10px; padding:10px 12px; font-size:.86rem}
+  .vs .h{font-weight:700; font-size:.8rem; margin-bottom:3px}
+  .vs .bad .h{color:var(--gray)} .vs .ok .h{color:var(--good)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="date">学習サマリー ・ 2026-06-22（初回セッション）</div>
+    <h1>「機械学習って何のため？」から<br>決定木を自力で再発明するまで</h1>
+    <p>用語も数式も使わず、自分のアプリを題材に、対話だけで一本の物語として組み立てた1日。</p>
+    <div class="goal">🎯 ゴール達成：決定木の "学習のしくみ" を自分の言葉で説明できた</div>
+  </div>
+
+  <section>
+    <h2>今日のひとことまとめ</h2>
+    <div class="summary">
+      AIの出力が「良いか」を判断するには <b>正解（ground truth）</b> が要る。でも正解は集めるのが大変でスケールしない。
+      だから <b>一部だけ正解を集めて、機械にパターンを学ばせる</b> ── これが機械学習。
+      そのパターンの正体のひとつが <b>決定木（＝if文の自動化）</b> で、
+      木は「2つの組がいちばんキレイに分かれる線」を <b>勘ではなく測定で</b> 選んで育つ。
+    </div>
+  </section>
+
+  <section>
+    <h2>学びの流れ（どう進んだか）</h2>
+    <p class="lead">各カードをタップすると、その時なにを考えたかの詳細が開きます。</p>
+    <div class="flow">
+
+      <div class="step" data-step="1"><div class="dot">1</div><div class="card">
+        <h3>普通の開発 ＝ 人間がif文でルールを書く</h3>
+        <p>しきい値も分岐も人間の頭の中にある知識をコードに写すだけ。</p>
+        <span class="why">↓ でも「猫か犬か」は手書きif文で書けない</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+      <div class="step" data-step="2"><div class="dot">2</div><div class="card">
+        <h3>機械学習 ＝ ルールをデータから導く</h3>
+        <p>人が書けない判定を、過去データのパターンから機械に作らせる。</p>
+        <span class="why">↓ じゃあAI案件で何がいちばん難しい？</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+      <div class="step" data-step="3"><div class="dot">3</div><div class="card">
+        <h3>いちばん難しいのは「出力が良いかを測ること」</h3>
+        <p>勘（"良い感じ"）では納品できない。精度・嘘の頻度・A/B比較は測らないと言えない。</p>
+        <span class="why">↓ 測るための信号を考えたら…</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+      <div class="step" data-step="4"><div class="dot">4</div><div class="card">
+        <h3>代理指標のワナに気づく</h3>
+        <p>「やり取り数」も「ボタン押下」も外からの推測。同じ50往復が "深い" とも "噛み合ってない" とも取れる。</p>
+        <span class="why">↓ 推測では真実に届かない。本当の答えは？</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+      <div class="step" data-step="5"><div class="dot">5</div><div class="card">
+        <h3>正解（ground truth）は本人しか知らない</h3>
+        <p>「深まったか」の真の答えはユーザー本人の中に。それを集めたものが正解ラベル。</p>
+        <span class="why">↓ でも全員に毎回は聞けない（スケールしない）</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+      <div class="step" data-step="6"><div class="dot">6</div><div class="card">
+        <h3>一部の正解で機械に学ばせる ＝ 教師あり学習／分類</h3>
+        <p>「信号＋本当の答え」を一部集め、パターンを学習。新しいセッションも判定できる。</p>
+        <span class="why">↓ そのパターン、具体的にどんな形？</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+      <div class="step" data-step="7"><div class="dot">7</div><div class="card">
+        <h3>決定木 ＝ if文の自動化</h3>
+        <p>自分で書いた入れ子のif文が、まさに決定木そのものだった。形は人間版と同じ。</p>
+        <span class="why">↓ 違いは「しきい値を誰が決めるか」だけ</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+      <div class="step" data-step="8"><div class="dot">8</div><div class="card">
+        <h3>分割の良さ ＝ 2クラスがどれだけキレイに分離するか</h3>
+        <p>両方が同じ位置（重なり）だと線は引けない。離れているほど良い分割。機械はこれを測って最適な線・手がかりを選ぶ。</p>
+        <span class="why">↓ あとは枝ごとに同じことを繰り返すだけ</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+      <div class="step" data-step="9"><div class="dot">9</div><div class="card">
+        <h3>枝の中で再帰的に繰り返して木を育てる</h3>
+        <p>枝に落ちたデータだけで再び最良の分割を探す。ほぼ一色になったら止める（葉）。</p>
+        <span class="why">✓ ここで決定木の学習が一周つながった</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>習得したキー概念</h2>
+    <div class="grid">
+      <div class="concept"><span class="tag">出発点</span>
+        <h3>機械学習</h3><p>ルールを人が書く代わりに、データからパターン（ルール）を導く考え方。</p></div>
+      <div class="concept"><span class="tag">評価</span>
+        <h3>代理指標（proxy）</h3><p>直接測れないものを観測できる行動で代用する。必ず "ズレ" があり、目標化すると壊れる（Goodhart）。</p></div>
+      <div class="concept"><span class="tag">評価の土台</span>
+        <h3>正解（ground truth）</h3><p>「本当はどうだったか」の答え。多くは本人や人手にしかなく、集めるのが大変。</p></div>
+      <div class="concept"><span class="tag">学習の枠組み</span>
+        <h3>教師あり学習／分類</h3><p>「特徴＋正解」のセットから学び、新しいデータを2択などに振り分ける。</p></div>
+      <div class="concept"><span class="tag">モデル</span>
+        <h3>決定木</h3><p>入れ子のif文。質問で枝分かれして最後に判定を出す。「if文の自動化」。</p></div>
+      <div class="concept"><span class="tag">学習のしくみ</span>
+        <h3>分離（不純度の直感）</h3><p>良い分割＝2クラスがいちばんキレイに分かれる手がかりと線引き。勘ではなく測定で選ぶ。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>題材にした通し例</h2>
+    <div class="panel">
+      <h3>自分の「思考を深めるチャットアプリ」（Gemini API）</h3>
+      <p style="margin:.2em 0 .6em; font-size:.9rem; color:#4b4b6b">
+        「このセッションは思考が深まったか？」を判定する、という問題で全部を考えた。</p>
+      <div>機械に渡す手がかり：
+        <div class="chips">
+          <span class="chip">やり取り数</span>
+          <span class="chip">まとめボタン押下</span>
+          <span class="chip">滞在時間</span>
+        </div>
+      </div>
+      <div style="margin-top:12px">正解ラベルの集め方：
+        <div class="chips">
+          <span class="chip label">チャット終了時アンケート（5段階）を一部のセッションで</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>自分で書いた決定木</h2>
+    <div class="tree">
+      <div class="node">
+        <span class="qbox">まとめを押した？</span>
+        <div class="branch">
+          <div class="blabel">いいえ</div>
+          <span class="leaf no">深まってない</span>
+          <div class="blabel">はい</div>
+          <span class="qbox">やり取り ≥ 約10回？</span>
+          <div class="branch">
+            <div class="blabel">いいえ</div>
+            <span class="leaf no">深まってない</span>
+            <div class="blabel">はい</div>
+            <span class="leaf yes">深まった</span>
+          </div>
+        </div>
+      </div>
+      <p class="treenote">
+        <b>人間版：</b>「約10回」のしきい値も「まとめを上に置く」順番も <b>勘</b> で決めた。<br>
+        <b>機械版：</b>同じ形のまま、しきい値も順番も <b>正解データで分離が最大になる所</b> を測って決める。
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2>途中で踏んだ "ワナ"（実務の勘所）</h2>
+    <div class="callout"><b>代理指標のズレ：</b>「やり取りが多い＝深い」は、噛み合わず言い直してる／脱線してるだけ、でも同じ数字になる。</div>
+    <div class="callout"><b>Goodhart：</b>指標を目標にした瞬間に壊れる。「往復数が多い＝良い」とすると、わざと往復を伸ばす作りが "正解" になってしまう。</div>
+    <div class="callout"><b>回答バイアス：</b>アンケートに答えるのは満足した人ばかり。集めた "正解" 自体が偏ることがある。</div>
+  </section>
+
+  <section>
+    <h2>後輩に説明するなら（今日の到達点）</h2>
+    <div class="quote">
+      <span class="mark">“</span>
+      <p>人間のif文じゃ手に負えない分類があるとき、まず<span class="fuel">正解付きのデータを用意する（燃料）</span>。
+      あとは機械が、そのデータで "2組がいちばんキレイに分かれる線" を測って、
+      <span class="engine">if文の木を自動で組む（エンジン）</span>。勘の代わりに、測定で。</p>
+      <small>── 燃料・エンジン・WHY、すべて対話の中から自分の言葉で出てきたもの</small>
+    </div>
+  </section>
+
+  <section>
+    <h2>次回の入口</h2>
+    <div class="next">
+      <ul>
+        <li><span class="num">1</span><b>"不純度 / ジニ"</b> ── 今日の「キレイに分かれる」に、正式な名前と測り方（式）を与える。</li>
+        <li><span class="num">2</span><b>Jupyterで実物を動かす</b> ── 環境を用意して、決定木を1回だけ実際に走らせてみる。</li>
+        <li><span class="num">3</span><b>森の物語</b> ── 「木1本は弱い」その弱点から、ランダムフォレスト → GBDT / LightGBM へ。</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>機械学習 自走学習プロジェクト ・ Day 1 ・ 2026-06-22</footer>
+
+</div>
+
+<!-- ===== modal ===== -->
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="modal-backdrop"></div>
+  <div class="modal-box" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <span class="mnum">1</span><span class="mtitle">タイトル</span>
+      <button class="modal-close" aria-label="閉じる">×</button>
+    </div>
+    <div class="modal-body"></div>
+  </div>
+</div>
+
+<!-- ===== step details (hidden source) ===== -->
+<div style="display:none">
+
+  <div class="detail-content" data-detail="1">
+    <p class="d-lead">機械学習に入る前に、まず「普通の開発って何をしてるんだっけ？」を確認した。ここが全ての出発点。</p>
+    <div class="d-block example"><span class="dl">具体例</span>
+      <p>アプリで条件分岐したいとき、こう書く：</p>
+      <p><span class="code">if (残高 &lt; 0) 警告を出す</span><br><span class="code">if (年齢 &gt;= 18) ...</span></p>
+      <p>しきい値も分岐も、ぜんぶ自分の頭の中の知識をコードに写しているだけ。</p>
+    </div>
+    <div class="d-block analogy"><span class="dl">たとえ</span>
+      <p>Android / Flutter で毎日やってる、あの当たり前の作業そのもの。ルールを決める主体は「人間」。</p>
+    </div>
+    <div class="d-block insight"><span class="dl">気づき</span>
+      <p>普通の開発＝<b>人間が手でルールを書く</b>。これが効かなくなる瞬間から、機械学習の話が始まる。</p>
+    </div>
+  </div>
+
+  <div class="detail-content" data-detail="2">
+    <p class="d-lead">手書きif文では歯が立たない問題がある。そこを機械にやらせる、というのが機械学習。</p>
+    <div class="d-block problem"><span class="dl">困りごと</span>
+      <p>「この写真は猫か犬か」を手書きif文で書ける？ ……書けない。「耳が尖ってたら猫」→ 垂れ耳の猫もいる。「ヒゲがあったら」→ 犬にもある。ルールが多すぎ・例外だらけ・そもそも言語化できない。</p>
+    </div>
+    <div class="d-block example"><span class="dl">どう解決する</span>
+      <p>ルールを人が書く代わりに、<b>正解つきの例をたくさん見せて、機械にルールを作らせる</b>。</p>
+    </div>
+    <div class="d-block analogy"><span class="dl">たとえ</span>
+      <p>「決定木の分岐は、要は<b>if文のしきい値をデータから自動で決めているだけ</b>」。後半でこれが効いてくる。</p>
+    </div>
+    <div class="d-block insight"><span class="dl">気づき</span>
+      <p>機械学習＝<b>ルールの自動生成</b>。人が書けない判定を、データのパターンから組み立てる。</p>
+    </div>
+  </div>
+
+  <div class="detail-content" data-detail="3">
+    <p class="d-lead">「なぜAI案件でデータ分析・Kaggleなの？」への答えの中核。いちばん難しいのは "作ること" じゃない。</p>
+    <div class="d-block problem"><span class="dl">本当に難しいこと</span>
+      <p>AIに良い出力を「させる」ことより、その出力が<b>本当に良いのかを判断して・測って・良くしていく</b>ことの方がずっと難しい。</p>
+    </div>
+    <div class="d-block example"><span class="dl">自分ごとの例</span>
+      <p>Geminiチャットを「案件」として納品するなら、「良い感じ」では通用しない：</p>
+      <p>・出力の精度は何%？<br>・ハルシネーション（嘘）の頻度は？<br>・プロンプトA案とB案、本当にどっちが良くなった？</p>
+      <p>どれも<b>勘では答えられない</b>。集めて・基準を決めて・数えて・比べる＝データ分析が要る。</p>
+    </div>
+    <div class="d-block insight"><span class="dl">気づき</span>
+      <p>「動けば正解」のアプリ開発と決定的に違う。<b>測れること</b>が価値の土台になる。</p>
+    </div>
+  </div>
+
+  <div class="detail-content" data-detail="4">
+    <p class="d-lead">「測る信号」を考えたら、すぐ落とし穴に当たった。これが評価のいちばん面白い所。</p>
+    <div class="d-block example"><span class="dl">考えた信号</span>
+      <p>「1セッションのやり取り数」「まとめボタンを押したか」。直接測れない "深まり" を、観測できる行動で代用しようとした。これを <b>代理指標（proxy）</b> と呼ぶ。</p>
+    </div>
+    <div class="d-block problem"><span class="dl">ワナ①：方向が定まらない</span>
+      <p>同じ「50往復」が、最高の深掘りとも、最悪のイライラ（噛み合わず言い直し／脱線）とも取れる。多い＝良い、とは言えない。</p>
+    </div>
+    <div class="d-block problem"><span class="dl">ワナ②：Goodhart</span>
+      <p>「往復数が多い＝良い」と決めて最適化すると、<b>わざと往復が伸びる作り</b>が "正解" になってしまう。指標を目標にした瞬間、その指標は壊れ始める。</p>
+    </div>
+    <div class="d-block insight"><span class="dl">気づき</span>
+      <p>やり取り数もボタンも、結局「外から行動を眺めて中身を推測してる」だけ。<b>推測である限りズレは消えない</b>。</p>
+    </div>
+  </div>
+
+  <div class="detail-content" data-detail="5">
+    <p class="d-lead">外からの推測がダメなら、本当の答えはどこにある？ ── と問いを詰めて辿り着いた核心。</p>
+    <div class="d-block example"><span class="dl">辿り着いた答え</span>
+      <p>「このセッションは思考が深まったか？」の<b>本当の答えは、やり取りした本人の中にしかない</b>。</p>
+    </div>
+    <div class="d-block insight"><span class="dl">用語</span>
+      <p>その「本人しか知らない本当の答え」を集めたものを <b>正解ラベル（ground truth）</b> と呼ぶ。評価はいつも「本当の答えを握ってるのは誰／どこか」を突き止める所から始まる。</p>
+    </div>
+    <div class="d-block problem"><span class="dl">次のカベ</span>
+      <p>でも本人にしか分からない＝<b>毎セッション・全ユーザーに聞いて回るのは無理</b>（うざいし、スケールしない）。何百万セッションをどう判定する？</p>
+    </div>
+  </div>
+
+  <div class="detail-content" data-detail="6">
+    <p class="d-lead">「全部は聞けない」を解くのが、まさに機械学習。最初の問いにここで繋がった。</p>
+    <div class="d-block example"><span class="dl">アイデア</span>
+      <p>仮に <b>1000セッションぶんだけ</b> 集める：<br>・各セッションの「外から見える信号」（往復数・まとめ押下・滞在時間）<br>・そのセッションに本人がくれた「本当の答え」（深まった／深まってない）</p>
+    </div>
+    <div class="d-block example"><span class="dl">機械がすること</span>
+      <p>この山から「深まった人に共通する信号のパターン」を見つける。さらに本番では、<b>まだ誰もラベルを付けてない新しいセッション</b>にも判定を出せる ＝ 全部は聞けない問題が解ける。</p>
+    </div>
+    <div class="d-block insight"><span class="dl">用語</span>
+      <p>「特徴＋正解」から学んで新データに当てる枠組み＝<b>教師あり学習</b>。深まった／否の2択に振り分けるのが <b>分類</b>。</p>
+    </div>
+  </div>
+
+  <div class="detail-content" data-detail="7">
+    <p class="d-lead">「そのパターン、具体的にどんな形？」を手書きしてもらったら、決定木が出てきた。</p>
+    <div class="d-block example"><span class="dl">自分で書いたコード</span>
+      <p><span class="code">if (まとめ押した) { if (やり取り≥10) 深まった else 深まってない } else 深まってない</span></p>
+      <p>3つの手がかりで判定ロジックを手書きしたら、自然に<b>入れ子のif文</b>になった。</p>
+    </div>
+    <div class="d-block insight"><span class="dl">正体</span>
+      <p>それがそのまま <b>決定木</b>。質問で枝分かれして最後に判定を出す。だから「決定木＝<b>if文の自動化</b>」。機械が学習した木と、<b>形は完全に同じ</b>。</p>
+    </div>
+    <div class="d-block analogy"><span class="dl">気づき</span>
+      <p>しかも「滞在時間」は使わなかった＝無意識に "要らない手がかり" を捨てた。どれを使い／捨てるかも、決定木がやる仕事。</p>
+    </div>
+  </div>
+
+  <div class="detail-content" data-detail="8">
+    <p class="d-lead">人間版と機械版の違いはたった1つ ── 「しきい値を勘で決めるか、データで決めるか」。その "データで決める" の中身。</p>
+    <div class="d-block problem"><span class="dl">出発点</span>
+      <p>「やり取り10回」は完全に勘だった。1000件の正解データを使って、最適な線引きを見つけるには？</p>
+    </div>
+    <div class="d-block example"><span class="dl">重なり vs 分離</span>
+      <div class="vs">
+        <div class="bad"><div class="h">✗ 線が引けない</div>深まった ≒ 12回<br>深まってない ≒ 12回<br><b>→ 重なってる</b>。どこに線を引いても両方混ざる。</div>
+        <div class="ok"><div class="h">✓ キレイに引ける</div>深まった = 14〜20回<br>深まってない = 2〜6回<br><b>→ 離れてる</b>。間（約10）でスパッと分かれる。</div>
+      </div>
+    </div>
+    <div class="d-block insight"><span class="dl">原理</span>
+      <p>良い分割＝<b>2クラスがいちばんキレイに分離する</b>手がかりと線引き。機械は線を試し置きして "分離が最大" の所を選ぶ。<b>どの手がかりを上に置くか</b>も、同じく「いちばんキレイに分けるやつ」で決める。<br>→ <b>勘が、測定になった。</b></p>
+    </div>
+  </div>
+
+  <div class="detail-content" data-detail="9">
+    <p class="d-lead">最後のピース。1回の分割ができれば、あとはそれを繰り返すだけで木が育つ。</p>
+    <div class="d-block example"><span class="dl">しくみ（再帰）</span>
+      <p>① 全1000件で「いちばんキレイに分ける手がかり」を選ぶ（1階）。<br>② その枝に<b>落ちたデータだけ</b>を取り出して、同じことをもう一回（2階）。<br>③ 枝ごとに繰り返す。</p>
+    </div>
+    <div class="d-block example"><span class="dl">止めどき</span>
+      <p>ある枝の中身が<b>ほぼ一色</b>（全部「深まった」など）になったら、そこで止めて判定を確定する＝<b>葉</b>。</p>
+    </div>
+    <div class="d-block analogy"><span class="dl">たとえ</span>
+      <p>自分が手で書いた "2階建て" のif文を、機械はデータに従って<b>何階でも自動で建てる</b>。</p>
+    </div>
+    <div class="d-block insight"><span class="dl">一周つながった</span>
+      <p>正解を用意（燃料）→ 分離が最大の分割を測って選ぶ（エンジン）→ 枝ごとに再帰。これで決定木の学習が完成。</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  (function(){
+    var modal = document.getElementById('modal');
+    var mbody = modal.querySelector('.modal-body');
+    var mnum  = modal.querySelector('.mnum');
+    var mtitle= modal.querySelector('.mtitle');
+
+    function openStep(step){
+      var n = step.getAttribute('data-step');
+      var d = document.querySelector('.detail-content[data-detail="'+n+'"]');
+      if(!d) return;
+      mnum.textContent = n;
+      mtitle.textContent = step.querySelector('h3').textContent;
+      mbody.innerHTML = d.innerHTML;
+      mbody.scrollTop = 0;
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden','false');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal(){
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+    }
+
+    var steps = document.querySelectorAll('.step');
+    for(var i=0;i<steps.length;i++){
+      (function(step){
+        step.querySelector('.card').addEventListener('click', function(){ openStep(step); });
+      })(steps[i]);
+    }
+    modal.querySelector('.modal-close').addEventListener('click', closeModal);
+    modal.querySelector('.modal-backdrop').addEventListener('click', closeModal);
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
+  })();
+</script>
+
+</body>
+</html>
