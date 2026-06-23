@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<!--
+  学習サマリー テンプレート（learning-summary スキル用）
+  使い方：このファイルを丸ごとコピーし、<!-- FILL: ... --> と「例」を実際の内容に置換して
+          learning-log/<YYYY-MM-DD>.html として保存する。
+  ・CSS / モーダル / <script> は変更しない（デザイン固定）。
+  ・「学びの流れ」と「詳細」はステップ数だけ複製し、data-step / data-detail の番号を一致させる。
+  ・使わないセクションは丸ごと削除。コメント・例・ダミーは最終出力に残さない。
+-->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学習サマリー — <!-- FILL: 日付 --></title>
+<style>
+  :root{
+    --bg:#f5f6fb; --card:#ffffff; --ink:#1f2433; --muted:#6b7280;
+    --line:#e6e8f0; --accent:#5b54e6; --accent-soft:#ecebff;
+    --good:#16a34a; --good-soft:#e7f6ec; --gray:#94a3b8; --gray-soft:#eef1f5;
+    --amber:#d97706; --amber-soft:#fdf1df; --teal:#0d9488; --teal-soft:#e6f7f4;
+    --shadow:0 6px 22px rgba(31,36,51,.07);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",
+      "Segoe UI",sans-serif; line-height:1.75; letter-spacing:.01em;
+  }
+  .wrap{max-width:880px; margin:0 auto; padding:32px 20px 80px}
+
+  .hero{background:linear-gradient(135deg,#5b54e6,#7c6cf0 55%,#9b8bf5);
+    color:#fff; border-radius:20px; padding:30px 32px; box-shadow:var(--shadow)}
+  .hero .date{font-size:.82rem; opacity:.85; letter-spacing:.06em}
+  .hero h1{margin:.25em 0 .15em; font-size:1.6rem; line-height:1.4}
+  .hero p{margin:.4em 0 0; opacity:.92; font-size:.96rem}
+  .hero .goal{display:inline-block; margin-top:16px; background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.35); padding:6px 14px; border-radius:999px;
+    font-size:.84rem; font-weight:600}
+
+  section{margin-top:38px}
+  h2{font-size:1.18rem; margin:0 0 16px; padding-left:12px;
+    border-left:5px solid var(--accent); line-height:1.3}
+  .lead{color:var(--muted); font-size:.92rem; margin:-6px 0 18px}
+
+  .summary{background:var(--card); border:1px solid var(--line); border-radius:16px;
+    padding:22px 24px; box-shadow:var(--shadow); font-size:1.02rem}
+  .summary b{color:var(--accent)}
+
+  .flow{position:relative; margin-left:8px; padding-left:30px; border-left:2px dashed var(--line)}
+  .step{position:relative; margin-bottom:22px}
+  .step:last-child{margin-bottom:0}
+  .step .dot{position:absolute; left:-41px; top:2px; width:26px; height:26px; border-radius:50%;
+    background:var(--accent); color:#fff; font-size:.8rem; font-weight:700;
+    display:flex; align-items:center; justify-content:center; box-shadow:0 0 0 4px var(--accent-soft); z-index:1}
+  .step .card{background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:14px 18px; box-shadow:var(--shadow); cursor:pointer;
+    transition:transform .15s, box-shadow .15s, border-color .15s}
+  .step .card:hover{transform:translateY(-2px); border-color:var(--accent);
+    box-shadow:0 10px 28px rgba(91,84,230,.16)}
+  .step h3{margin:0 0 4px; font-size:1rem}
+  .step p{margin:0; color:var(--muted); font-size:.9rem}
+  .step .why{display:block; margin-top:8px; font-size:.82rem; color:var(--accent); font-weight:600}
+  .step .more{margin-top:10px; display:inline-flex; align-items:center; gap:5px;
+    font-size:.76rem; font-weight:700; color:var(--accent); background:var(--accent-soft);
+    padding:4px 11px; border-radius:999px}
+
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px}
+  .concept{background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:16px 18px; box-shadow:var(--shadow)}
+  .concept .tag{font-size:.72rem; font-weight:700; color:var(--accent); background:var(--accent-soft);
+    padding:3px 9px; border-radius:999px; display:inline-block; margin-bottom:8px}
+  .concept h3{margin:0 0 5px; font-size:1rem}
+  .concept p{margin:0; font-size:.88rem; color:var(--muted)}
+
+  .panel{background:var(--accent-soft); border:1px solid #d9d6ff; border-radius:16px; padding:20px 22px}
+  .panel h3{margin:0 0 10px; font-size:1rem; color:var(--accent)}
+  .chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:6px}
+  .chip{background:#fff; border:1px solid #d9d6ff; border-radius:999px; padding:5px 12px; font-size:.84rem}
+  .chip.label{background:var(--good-soft); border-color:#bfe6c9; color:#0f7a35; font-weight:600}
+
+  .tree{background:var(--card); border:1px solid var(--line); border-radius:16px;
+    padding:22px; box-shadow:var(--shadow); overflow-x:auto}
+  .qbox{display:inline-block; background:#fff; border:2px solid var(--accent); color:var(--accent);
+    font-weight:700; border-radius:10px; padding:8px 14px; font-size:.92rem}
+  .branch{margin:8px 0 0 22px; padding-left:20px; border-left:2px solid var(--line)}
+  .blabel{font-size:.78rem; color:var(--muted); font-weight:600; margin:10px 0 4px}
+  .leaf{display:inline-block; border-radius:999px; padding:5px 14px; font-size:.86rem; font-weight:700}
+  .leaf.yes{background:var(--good-soft); color:#0f7a35; border:1px solid #bfe6c9}
+  .leaf.no{background:var(--gray-soft); color:#475569; border:1px solid #d7dde6}
+  .treenote{margin-top:14px; font-size:.84rem; color:var(--muted)}
+  .treenote b{color:var(--ink)}
+
+  .callout{background:var(--amber-soft); border:1px solid #f3dcb6; border-left:5px solid var(--amber);
+    border-radius:12px; padding:12px 16px; margin-bottom:10px; font-size:.9rem}
+  .callout b{color:var(--amber)}
+
+  .quote{background:linear-gradient(135deg,#1f2433,#2c3350); color:#fff; border-radius:16px;
+    padding:24px 26px; box-shadow:var(--shadow); position:relative}
+  .quote .mark{font-size:2.4rem; line-height:0; opacity:.3; position:absolute; top:22px; left:18px}
+  .quote p{margin:0 0 0 26px; font-size:1.02rem}
+  .quote .hi1{color:#ffd479; font-weight:700}
+  .quote .hi2{color:#9be8b0; font-weight:700}
+  .quote small{display:block; margin:14px 0 0 26px; opacity:.7; font-size:.8rem}
+
+  .next li{margin-bottom:10px; list-style:none}
+  .next ul{padding-left:0}
+  .next .num{display:inline-block; width:24px; height:24px; border-radius:7px;
+    background:var(--accent); color:#fff; text-align:center; font-weight:700;
+    font-size:.82rem; line-height:24px; margin-right:10px; vertical-align:middle}
+
+  footer{margin-top:46px; text-align:center; color:var(--muted); font-size:.8rem}
+
+  /* ===== modal ===== */
+  .modal{position:fixed; inset:0; display:none; z-index:50}
+  .modal.open{display:block}
+  .modal-backdrop{position:absolute; inset:0; background:rgba(20,22,34,.55); backdrop-filter:blur(3px)}
+  .modal-box{position:relative; max-width:660px; margin:5vh auto; width:calc(100% - 32px);
+    background:var(--card); border-radius:18px; box-shadow:0 24px 60px rgba(0,0,0,.3);
+    max-height:90vh; overflow:hidden; display:flex; flex-direction:column; animation:pop .22s ease}
+  @keyframes pop{from{opacity:0; transform:translateY(12px) scale(.98)} to{opacity:1; transform:none}}
+  .modal-head{display:flex; align-items:center; gap:12px; padding:18px 22px; border-bottom:1px solid var(--line)}
+  .modal-head .mnum{width:30px; height:30px; border-radius:50%; background:var(--accent); color:#fff;
+    font-weight:700; display:flex; align-items:center; justify-content:center; flex:0 0 auto}
+  .modal-head .mtitle{font-weight:700; font-size:1.05rem; line-height:1.35}
+  .modal-close{margin-left:auto; border:none; background:var(--gray-soft); width:32px; height:32px;
+    border-radius:50%; font-size:1.2rem; cursor:pointer; color:#475569; line-height:1; flex:0 0 auto}
+  .modal-close:hover{background:#e1e6ee}
+  .modal-body{padding:20px 22px; overflow-y:auto}
+
+  .d-lead{color:var(--muted); margin:0 0 4px; font-size:.95rem}
+  .d-block{border-radius:12px; padding:12px 16px; margin:14px 0; font-size:.92rem; border-left:4px solid}
+  .d-block:last-child{margin-bottom:2px}
+  .d-block .dl{font-size:.72rem; font-weight:800; letter-spacing:.05em; display:block; margin-bottom:5px}
+  .d-block p{margin:.3em 0}
+  .d-block.problem{background:var(--amber-soft); border-color:var(--amber)} .d-block.problem .dl{color:var(--amber)}
+  .d-block.example{background:var(--accent-soft); border-color:var(--accent)} .d-block.example .dl{color:var(--accent)}
+  .d-block.analogy{background:var(--teal-soft); border-color:var(--teal)} .d-block.analogy .dl{color:var(--teal)}
+  .d-block.insight{background:var(--good-soft); border-color:var(--good)} .d-block.insight .dl{color:#0f7a35}
+  .code{font-family:ui-monospace,Menlo,Consolas,monospace; background:#eef0f6; padding:2px 6px;
+    border-radius:5px; font-size:.85em}
+  .vs{display:flex; gap:10px; flex-wrap:wrap; margin:10px 0}
+  .vs > div{flex:1; min-width:180px; background:#fff; border:1px solid var(--line); border-radius:10px; padding:10px 12px; font-size:.86rem}
+  .vs .h{font-weight:700; font-size:.8rem; margin-bottom:3px}
+  .vs .bad .h{color:var(--gray)} .vs .ok .h{color:var(--good)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="date">学習サマリー ・ <!-- FILL: 日付・回数（例：2026-06-22（初回セッション）） --></div>
+    <h1><!-- FILL: セッションのタイトル（1〜2行） --></h1>
+    <p><!-- FILL: サブ説明（どんな1日だったか1文） --></p>
+    <div class="goal">🎯 <!-- FILL: 達成したゴール --></div>
+  </div>
+
+  <section>
+    <h2>今日のひとことまとめ</h2>
+    <div class="summary"><!-- FILL: 全体を3〜4文で。重要語は <b>…</b> で強調 --></div>
+  </section>
+
+  <section>
+    <h2>学びの流れ（どう進んだか）</h2>
+    <p class="lead">各カードをタップすると、その時なにを考えたかの詳細が開きます。</p>
+    <div class="flow">
+
+      <!-- ▼▼ EXAMPLE STEP：学習ステップの数だけ複製。data-step は 1,2,3... と連番 ▼▼ -->
+      <div class="step" data-step="1"><div class="dot">1</div><div class="card">
+        <h3><!-- FILL: ステップ見出し --></h3>
+        <p><!-- FILL: 1行概要 --></p>
+        <span class="why">↓ <!-- FILL: なぜ次へ進んだか --></span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+      <!-- ▲▲ EXAMPLE STEP ここまで ▲▲ -->
+
+    </div>
+  </section>
+
+  <section>
+    <h2>習得したキー概念</h2>
+    <div class="grid">
+      <!-- ▼ EXAMPLE CONCEPT：概念の数だけ複製 ▼ -->
+      <div class="concept"><span class="tag"><!-- FILL: 分類ラベル --></span>
+        <h3><!-- FILL: 用語 --></h3><p><!-- FILL: 平易な定義 --></p></div>
+      <!-- ▲ EXAMPLE CONCEPT ▲ -->
+    </div>
+  </section>
+
+  <section>
+    <h2>題材にした通し例</h2>
+    <div class="panel">
+      <h3><!-- FILL: 題材の名前 --></h3>
+      <p style="margin:.2em 0 .6em; font-size:.9rem; color:#4b4b6b"><!-- FILL: どんな問題設定で考えたか --></p>
+      <div><!-- FILL: ラベル -->：
+        <div class="chips">
+          <span class="chip"><!-- FILL --></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 任意セクション：このセッションで図・コードなどの成果物が出たときだけ残す。無ければ削除。
+       下は決定木の例。別の図なら中身を作り替える。 -->
+  <section>
+    <h2><!-- FILL: 図/成果物の見出し --></h2>
+    <div class="tree">
+      <!-- FILL: 図の中身（.qbox 質問ノード / .branch 枝 / .leaf 葉 などを使う） -->
+      <p class="treenote"><!-- FILL: 補足 --></p>
+    </div>
+  </section>
+
+  <section>
+    <h2>途中で踏んだ "ワナ"（実務の勘所）</h2>
+    <!-- EXAMPLE：気づいた落とし穴の数だけ複製。無ければセクションごと削除 -->
+    <div class="callout"><b><!-- FILL: ワナ名 -->：</b><!-- FILL: 説明 --></div>
+  </section>
+
+  <section>
+    <h2>到達点の一文</h2>
+    <div class="quote">
+      <span class="mark">“</span>
+      <p><!-- FILL: 集大成の一文。要所を <span class="hi1">…</span> / <span class="hi2">…</span> で強調 --></p>
+      <small>── <!-- FILL: 補足 --></small>
+    </div>
+  </section>
+
+  <section>
+    <h2>次回の入口</h2>
+    <div class="next">
+      <ul>
+        <!-- EXAMPLE：候補の数だけ複製 -->
+        <li><span class="num">1</span><b><!-- FILL: 見出し --></b> ── <!-- FILL: 説明 --></li>
+      </ul>
+    </div>
+  </section>
+
+  <footer><!-- FILL: 例）機械学習 自走学習プロジェクト ・ Day N ・ 日付 --></footer>
+
+</div>
+
+<!-- ===== modal（変更しない） ===== -->
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="modal-backdrop"></div>
+  <div class="modal-box" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <span class="mnum">1</span><span class="mtitle">タイトル</span>
+      <button class="modal-close" aria-label="閉じる">×</button>
+    </div>
+    <div class="modal-body"></div>
+  </div>
+</div>
+
+<!-- ===== step details（hidden source）：各 .step に 1:1 対応。data-detail を data-step と一致させる ===== -->
+<div style="display:none">
+
+  <!-- ▼▼ EXAMPLE DETAIL：ステップの数だけ複製 ▼▼ -->
+  <div class="detail-content" data-detail="1">
+    <p class="d-lead"><!-- FILL: このステップの導入1文 --></p>
+    <!-- 使うブロックだけ置く。色分けは固定の意味：
+         problem=困りごと / example=具体例・解決 / analogy=たとえ / insight=気づき -->
+    <div class="d-block problem"><span class="dl">困りごと</span><p><!-- FILL --></p></div>
+    <div class="d-block example"><span class="dl">具体例</span><p><!-- FILL（コードは <span class="code">…</span>、対比は .vs を使ってよい） --></p></div>
+    <div class="d-block analogy"><span class="dl">たとえ</span><p><!-- FILL --></p></div>
+    <div class="d-block insight"><span class="dl">気づき</span><p><!-- FILL --></p></div>
+  </div>
+  <!-- ▲▲ EXAMPLE DETAIL ここまで ▲▲ -->
+
+</div>
+
+<script>
+  (function(){
+    var modal = document.getElementById('modal');
+    var mbody = modal.querySelector('.modal-body');
+    var mnum  = modal.querySelector('.mnum');
+    var mtitle= modal.querySelector('.mtitle');
+
+    function openStep(step){
+      var n = step.getAttribute('data-step');
+      var d = document.querySelector('.detail-content[data-detail="'+n+'"]');
+      if(!d) return;
+      mnum.textContent = n;
+      mtitle.textContent = step.querySelector('h3').textContent;
+      mbody.innerHTML = d.innerHTML;
+      mbody.scrollTop = 0;
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden','false');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal(){
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+    }
+
+    var steps = document.querySelectorAll('.step');
+    for(var i=0;i<steps.length;i++){
+      (function(step){
+        step.querySelector('.card').addEventListener('click', function(){ openStep(step); });
+      })(steps[i]);
+    }
+    modal.querySelector('.modal-close').addEventListener('click', closeModal);
+    modal.querySelector('.modal-backdrop').addEventListener('click', closeModal);
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
+  })();
+</script>
+
+</body>
+</html>
