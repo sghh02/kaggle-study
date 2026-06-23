@@ -1,0 +1,12 @@
+# Python venv（道具の塊。コミットしない）
+.venv/
+
+# Python キャッシュ
+__pycache__/
+*.pyc
+
+# Jupyter
+.ipynb_checkpoints/
+
+# 学習で生成される画像（必要なら個別に外す）
+notebooks/*.png
