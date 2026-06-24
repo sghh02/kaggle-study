@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学習サマリー — 2026-06-24（Day 3）</title>
+<style>
+  :root{
+    --bg:#f5f6fb; --card:#ffffff; --ink:#1f2433; --muted:#6b7280;
+    --line:#e6e8f0; --accent:#5b54e6; --accent-soft:#ecebff;
+    --good:#16a34a; --good-soft:#e7f6ec; --gray:#94a3b8; --gray-soft:#eef1f5;
+    --amber:#d97706; --amber-soft:#fdf1df; --teal:#0d9488; --teal-soft:#e6f7f4;
+    --shadow:0 6px 22px rgba(31,36,51,.07);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",
+      "Segoe UI",sans-serif; line-height:1.75; letter-spacing:.01em;
+  }
+  .wrap{max-width:880px; margin:0 auto; padding:32px 20px 80px}
+
+  .hero{background:linear-gradient(135deg,#5b54e6,#7c6cf0 55%,#9b8bf5);
+    color:#fff; border-radius:20px; padding:30px 32px; box-shadow:var(--shadow)}
+  .hero .date{font-size:.82rem; opacity:.85; letter-spacing:.06em}
+  .hero h1{margin:.25em 0 .15em; font-size:1.6rem; line-height:1.4}
+  .hero p{margin:.4em 0 0; opacity:.92; font-size:.96rem}
+  .hero .goal{display:inline-block; margin-top:16px; background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.35); padding:6px 14px; border-radius:999px;
+    font-size:.84rem; font-weight:600}
+
+  section{margin-top:38px}
+  h2{font-size:1.18rem; margin:0 0 16px; padding-left:12px;
+    border-left:5px solid var(--accent); line-height:1.3}
+  .lead{color:var(--muted); font-size:.92rem; margin:-6px 0 18px}
+
+  .summary{background:var(--card); border:1px solid var(--line); border-radius:16px;
+    padding:22px 24px; box-shadow:var(--shadow); font-size:1.02rem}
+  .summary b{color:var(--accent)}
+
+  .flow{position:relative; margin-left:8px; padding-left:30px; border-left:2px dashed var(--line)}
+  .step{position:relative; margin-bottom:22px}
+  .step:last-child{margin-bottom:0}
+  .step .dot{position:absolute; left:-41px; top:2px; width:26px; height:26px; border-radius:50%;
+    background:var(--accent); color:#fff; font-size:.8rem; font-weight:700;
+    display:flex; align-items:center; justify-content:center; box-shadow:0 0 0 4px var(--accent-soft); z-index:1}
+  .step .card{background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:14px 18px; box-shadow:var(--shadow); cursor:pointer;
+    transition:transform .15s, box-shadow .15s, border-color .15s}
+  .step .card:hover{transform:translateY(-2px); border-color:var(--accent);
+    box-shadow:0 10px 28px rgba(91,84,230,.16)}
+  .step h3{margin:0 0 4px; font-size:1rem}
+  .step p{margin:0; color:var(--muted); font-size:.9rem}
+  .step .why{display:block; margin-top:8px; font-size:.82rem; color:var(--accent); font-weight:600}
+  .step .more{margin-top:10px; display:inline-flex; align-items:center; gap:5px;
+    font-size:.76rem; font-weight:700; color:var(--accent); background:var(--accent-soft);
+    padding:4px 11px; border-radius:999px}
+
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px}
+  .concept{background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:16px 18px; box-shadow:var(--shadow)}
+  .concept .tag{font-size:.72rem; font-weight:700; color:var(--accent); background:var(--accent-soft);
+    padding:3px 9px; border-radius:999px; display:inline-block; margin-bottom:8px}
+  .concept h3{margin:0 0 5px; font-size:1rem}
+  .concept p{margin:0; font-size:.88rem; color:var(--muted)}
+
+  .panel{background:var(--accent-soft); border:1px solid #d9d6ff; border-radius:16px; padding:20px 22px}
+  .panel h3{margin:0 0 10px; font-size:1rem; color:var(--accent)}
+  .chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:6px}
+  .chip{background:#fff; border:1px solid #d9d6ff; border-radius:999px; padding:5px 12px; font-size:.84rem}
+  .chip.label{background:var(--good-soft); border-color:#bfe6c9; color:#0f7a35; font-weight:600}
+
+  .tree{background:var(--card); border:1px solid var(--line); border-radius:16px;
+    padding:22px; box-shadow:var(--shadow); overflow-x:auto}
+  .qbox{display:inline-block; background:#fff; border:2px solid var(--accent); color:var(--accent);
+    font-weight:700; border-radius:10px; padding:8px 14px; font-size:.92rem}
+  .branch{margin:8px 0 0 22px; padding-left:20px; border-left:2px solid var(--line)}
+  .blabel{font-size:.78rem; color:var(--muted); font-weight:600; margin:10px 0 4px}
+  .leaf{display:inline-block; border-radius:999px; padding:5px 14px; font-size:.86rem; font-weight:700}
+  .leaf.yes{background:var(--good-soft); color:#0f7a35; border:1px solid #bfe6c9}
+  .leaf.no{background:var(--gray-soft); color:#475569; border:1px solid #d7dde6}
+  .treenote{margin-top:14px; font-size:.84rem; color:var(--muted)}
+  .treenote b{color:var(--ink)}
+
+  .callout{background:var(--amber-soft); border:1px solid #f3dcb6; border-left:5px solid var(--amber);
+    border-radius:12px; padding:12px 16px; margin-bottom:10px; font-size:.9rem}
+  .callout b{color:var(--amber)}
+
+  .quote{background:linear-gradient(135deg,#1f2433,#2c3350); color:#fff; border-radius:16px;
+    padding:24px 26px; box-shadow:var(--shadow); position:relative}
+  .quote .mark{font-size:2.4rem; line-height:0; opacity:.3; position:absolute; top:22px; left:18px}
+  .quote p{margin:0 0 0 26px; font-size:1.02rem}
+  .quote .hi1{color:#ffd479; font-weight:700}
+  .quote .hi2{color:#9be8b0; font-weight:700}
+  .quote small{display:block; margin:14px 0 0 26px; opacity:.7; font-size:.8rem}
+
+  .next li{margin-bottom:10px; list-style:none}
+  .next ul{padding-left:0}
+  .next .num{display:inline-block; width:24px; height:24px; border-radius:7px;
+    background:var(--accent); color:#fff; text-align:center; font-weight:700;
+    font-size:.82rem; line-height:24px; margin-right:10px; vertical-align:middle}
+
+  footer{margin-top:46px; text-align:center; color:var(--muted); font-size:.8rem}
+
+  /* ===== modal ===== */
+  .modal{position:fixed; inset:0; display:none; z-index:50}
+  .modal.open{display:block}
+  .modal-backdrop{position:absolute; inset:0; background:rgba(20,22,34,.55); backdrop-filter:blur(3px)}
+  .modal-box{position:relative; max-width:660px; margin:5vh auto; width:calc(100% - 32px);
+    background:var(--card); border-radius:18px; box-shadow:0 24px 60px rgba(0,0,0,.3);
+    max-height:90vh; overflow:hidden; display:flex; flex-direction:column; animation:pop .22s ease}
+  @keyframes pop{from{opacity:0; transform:translateY(12px) scale(.98)} to{opacity:1; transform:none}}
+  .modal-head{display:flex; align-items:center; gap:12px; padding:18px 22px; border-bottom:1px solid var(--line)}
+  .modal-head .mnum{width:30px; height:30px; border-radius:50%; background:var(--accent); color:#fff;
+    font-weight:700; display:flex; align-items:center; justify-content:center; flex:0 0 auto}
+  .modal-head .mtitle{font-weight:700; font-size:1.05rem; line-height:1.35}
+  .modal-close{margin-left:auto; border:none; background:var(--gray-soft); width:32px; height:32px;
+    border-radius:50%; font-size:1.2rem; cursor:pointer; color:#475569; line-height:1; flex:0 0 auto}
+  .modal-close:hover{background:#e1e6ee}
+  .modal-body{padding:20px 22px; overflow-y:auto}
+
+  .d-lead{color:var(--muted); margin:0 0 4px; font-size:.95rem}
+  .d-block{border-radius:12px; padding:12px 16px; margin:14px 0; font-size:.92rem; border-left:4px solid}
+  .d-block:last-child{margin-bottom:2px}
+  .d-block .dl{font-size:.72rem; font-weight:800; letter-spacing:.05em; display:block; margin-bottom:5px}
+  .d-block p{margin:.3em 0}
+  .d-block.problem{background:var(--amber-soft); border-color:var(--amber)} .d-block.problem .dl{color:var(--amber)}
+  .d-block.example{background:var(--accent-soft); border-color:var(--accent)} .d-block.example .dl{color:var(--accent)}
+  .d-block.analogy{background:var(--teal-soft); border-color:var(--teal)} .d-block.analogy .dl{color:var(--teal)}
+  .d-block.insight{background:var(--good-soft); border-color:var(--good)} .d-block.insight .dl{color:#0f7a35}
+  .code{font-family:ui-monospace,Menlo,Consolas,monospace; background:#eef0f6; padding:2px 6px;
+    border-radius:5px; font-size:.85em}
+  .vs{display:flex; gap:10px; flex-wrap:wrap; margin:10px 0}
+  .vs > div{flex:1; min-width:180px; background:#fff; border:1px solid var(--line); border-radius:10px; padding:10px 12px; font-size:.86rem}
+  .vs .h{font-weight:700; font-size:.8rem; margin-bottom:3px}
+  .vs .bad .h{color:var(--gray)} .vs .ok .h{color:var(--good)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="date">学習サマリー ・ 2026-06-24（Day 3）</div>
+    <h1>過学習を体感する<br>──「深い木＝賢い」は嘘だった</h1>
+    <p>昨日の <span style="font-family:monospace">max_depth=3</span> は適当だった、という気づきから出発し、木1本の限界（過学習）を、自分の予想を当てながら突き止めた1日。</p>
+    <div class="goal">🎯 達成：train/test の差で過学習を見抜き、複雑さを下げて汎化を守る、を自分の言葉で説明できた</div>
+  </div>
+
+  <section>
+    <h2>今日のひとことまとめ</h2>
+    <div class="summary">昨日 <b>max_depth=3</b> と書いた「3」は適当だった。なら制限を外して深く育てれば賢くなる？ ── 制限なしの木は訓練データで <b>98%</b> 出したが、隠しておいた抜き打ち試験（test）では <b>73%</b>。簡単な木（84%）に<b>負けた</b>。深い木は丸暗記（<b>過学習</b>）していただけ。train と test の<b>差</b>こそが過学習のサインで、複雑さを下げると <b>汎化</b> が戻る。この「木1本の限界」が、次の森の物語を呼ぶ。</div>
+  </section>
+
+  <section>
+    <h2>学びの流れ（どう進んだか）</h2>
+    <p class="lead">各カードをタップすると、その時なにを考えたかの詳細が開きます。</p>
+    <div class="flow">
+
+      <div class="step" data-step="1"><div class="dot">1</div><div class="card">
+        <h3>昨日の max_depth=3 は、実は適当だった</h3>
+        <p>「3」は私が言っただけ。上限を付けない選択肢もある。</p>
+        <span class="why">↓ じゃあ制限を外せば賢くなる？</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+      <div class="step" data-step="2"><div class="dot">2</div><div class="card">
+        <h3>予想：制限なしで深く育てたら？</h3>
+        <p>「完全には分けられず、純度の限界が来そう」と予想した。</p>
+        <span class="why">↓ 実際に回して確かめる</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+      <div class="step" data-step="3"><div class="dot">3</div><div class="card">
+        <h3>純度の限界は本当にあった（でも98%まで行った）</h3>
+        <p>制限なし＝深さ14・葉114枚・訓練98%。100%にならない理由は「矛盾するデータ」。</p>
+        <span class="why">↓ でも 98% &gt; 82%。深い木の勝ち？</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+      <div class="step" data-step="4"><div class="dot">4</div><div class="card">
+        <h3>罠：その98%は「答えを見ながらのテスト」</h3>
+        <p>解答集を持って模試で98点。それで賢いと言える？</p>
+        <span class="why">↓ 本当の賢さは「見てないデータ」で測る</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+      <div class="step" data-step="5"><div class="dot">5</div><div class="card">
+        <h3>道具：train/test split（抜き打ち試験）</h3>
+        <p>正解の一部を隠し、学習に使わず採点だけに使う。Kaggle が答えを隠すのと同じ。</p>
+        <span class="why">↓ 予想：浅い木の方が test で勝つ</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+      <div class="step" data-step="6"><div class="dot">6</div><div class="card">
+        <h3>答え合わせ：浅い木の圧勝</h3>
+        <p>深い木 test 73% ＜ 浅い木 test 84%。予想的中。</p>
+        <span class="why">↓ 曲線で見ると一目瞭然</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+      <div class="step" data-step="7"><div class="dot">7</div><div class="card">
+        <h3>過学習曲線と、木1本の限界</h3>
+        <p>test は深さ3で頂点→以降下がる。train/test の開き＝過学習。</p>
+        <span class="why">✓ 次の「森の物語」のお膳立て完成</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>習得したキー概念</h2>
+    <div class="grid">
+      <div class="concept"><span class="tag">今日の主役</span>
+        <h3>過学習（overfitting）</h3><p>訓練データを丸暗記して、新しいデータで失敗する状態。train↑ / test↓ の「差」で見抜く。</p></div>
+      <div class="concept"><span class="tag">ML の目的</span>
+        <h3>汎化（generalization）</h3><p>見ていないデータでも通用する、本物の賢さ。Kaggle で評価されるのはこちら。</p></div>
+      <div class="concept"><span class="tag">今日の道具</span>
+        <h3>train / test split</h3><p>正解付きデータの一部を隠し、学習に使わず採点だけに使う作法。Kaggle が答えを隠す構図と同じ。</p></div>
+      <div class="concept"><span class="tag">役割の整理</span>
+        <h3>検査 vs 治療</h3><p>過学習を「見つける」のが train/test split（検査）、「治す」のが複雑さを下げる＝深さを浅くする（治療）。</p></div>
+      <div class="concept"><span class="tag">最適点</span>
+        <h3>ちょうどいい複雑さ</h3><p>浅すぎ＝表現不足、深すぎ＝丸暗記。test が頂点になる所が最適（今回は深さ3）。</p></div>
+      <div class="concept"><span class="tag">純度の限界</span>
+        <h3>矛盾するデータ</h3><p>手がかりが完全一致なのに答えが割れる行（今回8組）があると、完全分離は原理的に不可能。これが純度の天井。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>題材にした通し例</h2>
+    <div class="panel">
+      <h3>「思考を深めるチャットアプリ」を判定する決定木（Day 1 から継続）</h3>
+      <p style="margin:.2em 0 .6em; font-size:.9rem; color:#4b4b6b">同じ 400 件の合成データ（chat_sessions.csv）を、今日は <b>train 300 件 / test 100 件</b> に分割。test は木に一切見せず、最後の抜き打ち試験にだけ使った。</p>
+      <div>手がかり（X）：
+        <div class="chips">
+          <span class="chip">turns</span>
+          <span class="chip">used_summary</span>
+          <span class="chip">stay_minutes</span>
+        </div>
+      </div>
+      <div style="margin-top:10px">正解（y）：
+        <div class="chips">
+          <span class="chip label">deepened（一部を test として隠す）</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>抜き打ち試験の結果（深い木 vs 浅い木）</h2>
+    <div class="tree">
+      <div class="blabel">深い木（制限なし・深さ14・葉114枚）</div>
+      <span class="leaf no">train 98.7% → test 73.0%　差 +25.7pt ＝ 丸暗記（過学習）</span>
+      <div class="blabel" style="margin-top:16px">浅い木（max_depth=3・葉8枚）</div>
+      <span class="leaf yes">train 80.7% → test 84.0%　差 −3.3pt ＝ 汎化（本物）</span>
+      <p class="treenote"><b>過学習曲線：</b>深さ 1→15 で成績を追うと、<b>train（見たデータ）は深くするほど上がり続け 98.7% に張り付く</b>。一方 <b>test（抜き打ち）は深さ3で頂点 84% → 以降 73% 前後へ低迷</b>。2本の線の開きが広がっていくのが、過学習が起きている姿。test の本当の勝者は <b>浅い木（84% &gt; 73%）</b> ── 予想どおり。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>途中で踏んだ "ワナ"（実務の勘所）</h2>
+    <div class="callout"><b>「深い＝賢い」の罠：</b>直感に反して、複雑にするほど汎化は壊れる。ちょうどいい複雑さに頂点があり、それを超えると賢さは下がる。</div>
+    <div class="callout"><b>訓練成績の罠：</b>「見たデータへの精度」は丸暗記でいくらでも盛れる（深い木の98.7%）。評価は必ず見ていないデータで行う。</div>
+    <div class="callout"><b>test の見すぎの罠（予告）：</b>test を見ながら深さを何度も選ぶと、今度は test に過学習してしまう。これを防ぐのが validation / 交差検証 ── 森の物語の後で回収。</div>
+  </section>
+
+  <section>
+    <h2>到達点の一文</h2>
+    <div class="quote">
+      <span class="mark">“</span>
+      <p>「深い木＝賢い」は嘘だった。見たデータへの 98% は丸暗記でいくらでも盛れる。本物の賢さは、隠しておいた <span class="hi2">抜き打ち試験（test）</span> でしか測れない。train と test の差が開いたら <span class="hi1">過学習</span> ── 複雑さを下げて <span class="hi2">汎化</span> を守る。</p>
+      <small>── 「深くすれば賢いはず」を自分で予想して叩き、浅い木の勝ちを言い当てて到達したもの</small>
+    </div>
+  </section>
+
+  <section>
+    <h2>次回の入口</h2>
+    <div class="next">
+      <ul>
+        <li><span class="num">1</span><b>森の物語</b> ── 木1本は過学習する。なら<strong>たくさんの木の意見を平均</strong>したら？ ＝ ランダムフォレスト → 勾配ブースティング（GBDT / LightGBM）へ。</li>
+        <li><span class="num">2</span><b>validation / 交差検証</b> ── 「test の見すぎ」を防ぐ、もう一段ちゃんとした評価の仕組み。</li>
+        <li><span class="num">3</span><b>gini の式</b> ── まだ保留中の宿題（<span class="code">1 −Σ割合²</span>）。直感に式の裏付けを与える。</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>機械学習 自走学習プロジェクト ・ Day 3 ・ 2026-06-24</footer>
+
+</div>
+
+<!-- ===== modal（変更しない） ===== -->
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="modal-backdrop"></div>
+  <div class="modal-box" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <span class="mnum">1</span><span class="mtitle">タイトル</span>
+      <button class="modal-close" aria-label="閉じる">×</button>
+    </div>
+    <div class="modal-body"></div>
+  </div>
+</div>
+
+<!-- ===== step details（hidden source） ===== -->
+<div style="display:none">
+
+  <div class="detail-content" data-detail="1">
+    <p class="d-lead">昨日 <span class="code">max_depth=3</span> と書いた「3」を、誰が決めたのか振り返った。</p>
+    <div class="d-block example"><span class="dl">具体例</span><p>「3」は読みやすさで私が提案しただけ。<span class="code">8</span> でもよかったし、<span class="code">max_depth=None</span>（上限なし）で、葉がほぼ一色になるまで育てることもできる。</p></div>
+    <div class="d-block insight"><span class="dl">気づき</span><p>ならば「制限を外して深く育てた方が、細かく見分けられて賢いのでは？」という素朴な疑問が湧く。今日はこの直感を叩く。</p></div>
+  </div>
+
+  <div class="detail-content" data-detail="2">
+    <p class="d-lead">手を動かす前に、制限なしで育てたら訓練データの正解率がどうなるか予想した。</p>
+    <div class="d-block example"><span class="dl">予想</span><p>「完全には分けられず、純度の限界が来そう」── 100% にはならず頭打ちになるはず、という読み。</p></div>
+    <div class="d-block insight"><span class="dl">気づき</span><p>「限界がある」という直感は、このあと実データで当たることになる。</p></div>
+  </div>
+
+  <div class="detail-content" data-detail="3">
+    <p class="d-lead">制限なし（<span class="code">max_depth=None</span>）で実際に育ててみた。</p>
+    <div class="d-block example"><span class="dl">具体例</span><p>深さ 14・葉 114 枚・訓練データ正解率 98.0%。100% にならない理由は、手がかりが完全一致なのに答えが割れる「矛盾」が <strong>8 組</strong>あるから（入力が同じなら、どんな if 文の木でも区別しようがない）。</p></div>
+    <div class="d-block insight"><span class="dl">気づき</span><p>予想どおり純度には限界があった。でも 98% は昨日の 82% より高い ── 一見「深い木の勝ち」に見える。</p></div>
+  </div>
+
+  <div class="detail-content" data-detail="4">
+    <p class="d-lead">98% という数字が「何のデータへの成績か」に引っかかった。</p>
+    <div class="d-block analogy"><span class="dl">たとえ</span><p>解答集を手に持って模試を受けた生徒は、当然 98 点を取れる。さて ── それだけを根拠に、その生徒が賢いと言えるか？</p></div>
+    <div class="d-block insight"><span class="dl">気づき</span><p>深さ 14・葉 114 の木は、400 件をほぼ 1 件ずつ仕分ける巨大なルックアップ表＝丸暗記。既知の入力には完璧でも、それは賢さではない。</p></div>
+  </div>
+
+  <div class="detail-content" data-detail="5">
+    <p class="d-lead">本当の賢さは「見ていないデータ」で測る、と気づいた。</p>
+    <div class="d-block example"><span class="dl">具体例</span><p>正解付きデータを <strong>train 300 件 / test 100 件</strong> に分割（<span class="code">train_test_split</span>）。train だけで学習し、test は絶対に見せず採点だけに使う。</p></div>
+    <div class="d-block analogy"><span class="dl">たとえ</span><p>Kaggle がテストの正解を隠すのと同じ。隠すからこそ、丸暗記でカンニングできない。</p></div>
+    <div class="d-block insight"><span class="dl">気づき</span><p>「答えを全部使わない」ではなく「<strong>答えの一部を採点用に隠す</strong>」。この分離の重要性を自力で言い当てた。検査（split で見つける）と治療（複雑さを下げる）は別の役割。</p></div>
+  </div>
+
+  <div class="detail-content" data-detail="6">
+    <p class="d-lead">train/test に割って採点し直し、予想と突き合わせた。</p>
+    <div class="d-block example"><span class="dl">具体例</span><p>深い木：train 98.7% → <strong>test 73.0%</strong>（差 +25.7pt）。浅い木：train 80.7% → <strong>test 84.0%</strong>（差 −3.3pt）。test の成績は <strong>浅い木 84% &gt; 深い木 73%</strong>。</p></div>
+    <div class="d-block insight"><span class="dl">気づき</span><p>「浅い木の方が汎用的だから勝つ」という予想が的中。深い木の 98.7% は、抜き打ちでは 73% まで落ち、簡単な木より下だった。train と test の 25pt の開きが、過学習が見える瞬間。</p></div>
+  </div>
+
+  <div class="detail-content" data-detail="7">
+    <p class="d-lead">深さ 1→15 で、train と test の成績曲線を描いた。</p>
+    <div class="d-block example"><span class="dl">具体例</span><p>train（見たデータ）は深くするほど上がり続け 98.7% に張り付く。test（抜き打ち）は深さ 3 で頂点 84% → 以降 73% へ低迷。2 本の線の開きが広がっていく＝過学習。</p></div>
+    <div class="d-block insight"><span class="dl">気づき</span><p>浅すぎ＝表現不足、深すぎ＝丸暗記。木 1 本では「賢さ」と「安定」を両立しにくい。これが Day 1 の予言「木 1 本は弱い」の正体で、次の森の物語（ランダムフォレスト → GBDT / LightGBM）を呼ぶ。</p></div>
+  </div>
+
+</div>
+
+<script>
+  (function(){
+    var modal = document.getElementById('modal');
+    var mbody = modal.querySelector('.modal-body');
+    var mnum  = modal.querySelector('.mnum');
+    var mtitle= modal.querySelector('.mtitle');
+
+    function openStep(step){
+      var n = step.getAttribute('data-step');
+      var d = document.querySelector('.detail-content[data-detail="'+n+'"]');
+      if(!d) return;
+      mnum.textContent = n;
+      mtitle.textContent = step.querySelector('h3').textContent;
+      mbody.innerHTML = d.innerHTML;
+      mbody.scrollTop = 0;
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden','false');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal(){
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+    }
+
+    var steps = document.querySelectorAll('.step');
+    for(var i=0;i<steps.length;i++){
+      (function(step){
+        step.querySelector('.card').addEventListener('click', function(){ openStep(step); });
+      })(steps[i]);
+    }
+    modal.querySelector('.modal-close').addEventListener('click', closeModal);
+    modal.querySelector('.modal-backdrop').addEventListener('click', closeModal);
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
+  })();
+</script>
+
+</body>
+</html>
