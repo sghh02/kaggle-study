@@ -1,50 +1,62 @@
-# SETUP — クローンして動かすまで
+# SETUP — ダウンロード/クローンして動かすまで
 
-`.venv`（道具の箱）は git に入れていないので、クローン後に再現する。
+`.venv`（道具の箱）は **git に入れていない**。
+理由: venv は数百MBあり、中身は **このOS・CPU専用にコンパイルされたバイナリ**なので、
+他マシンに持っていっても動かない（`node_modules` / `.dart_tool` をコミットしないのと同じ）。
+代わりに「**何を入れるか**」のリスト `requirements.txt` をコミットしてあり、各マシンでそこから再現する。
 
-## 1. クローン
+---
+
+## いちばん簡単：1コマンド（Mac / Linux）
+
+ZIP を解凍 or `git clone` したフォルダの中で:
+
 ```bash
-git clone https://github.com/sghh02/kaggle-study.git
-cd kaggle-study
-git switch day2-decision-tree   # 今日の作業ブランチ
+bash setup.sh
 ```
 
-## 2. 環境を作る（道具を入れる）
+これだけで **「.venv 作成 → ライブラリ一括インストール → Jupyterカーネル登録 → 動作確認」** まで全部やる。
+終わったら VS Code でノートを開き、右上のカーネルに **`kaggle-study`** を選んで **Run All**。
 
-### uv がある場合（速い・おすすめ）
+---
+
+## 手動でやる場合
+
+### Mac / Linux
+```bash
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python -m ipykernel install --user --name kaggle-study --display-name "Python (kaggle-study)"
+```
+
+### Windows（PowerShell）
+```powershell
+python -m venv .venv
+.venv\Scripts\python -m pip install -r requirements.txt
+.venv\Scripts\python -m ipykernel install --user --name kaggle-study --display-name "Python (kaggle-study)"
+```
+
+### uv がある場合（速い）
 ```bash
 uv venv --python 3.13 .venv
 uv pip install --python .venv -r requirements.txt
 ```
 
-### uv が無い場合（標準の venv + pip）
-```bash
-python3 -m venv .venv
-.venv/bin/pip install -r requirements.txt
+---
+
+## ノートの場所（日付ごとのフォルダ）
+
+| 日 | ノート | テーマ |
+|---|---|---|
+| Day 2 | `notebooks/day2_decision_tree/day2_decision_tree.ipynb` | 決定木を実物で動かす |
+| Day 4 | `notebooks/day4_random_forest/day4_random_forest.ipynb` | ランダムフォレスト |
+| Day 5 | `notebooks/day5_gbdt/day5_gbdt.ipynb` | GBDT（勾配ブースティング） |
+
+各ノートは**上から順に実行**:
+- 🧱セル（import・データ読込・描画）は **そのまま実行でOK**
+- 🎯セル（モデルを建てる部分）は **自分で書く**（書くまで実行するとエラーになる。わざと）
+
+困ったら「今どの Python で動いてる？」を確認:
+```python
+import sys; print(sys.executable)   # → …/kaggle-study/.venv/bin/python なら正解
 ```
-
-## 3. ノートブックを開く
-
-### A) JupyterLab をブラウザで
-```bash
-.venv/bin/jupyter lab
-```
-→ ブラウザで `notebooks/day2_decision_tree.ipynb` を開く。
-→ 右上のカーネルが `.venv` を指しているか確認（無ければ手順4を先に）。
-
-### B) VS Code で
-`notebooks/day2_decision_tree.ipynb` を開き、右上の **カーネル選択**で `.venv/bin/python` を選ぶ。
-
-## 4.（任意）カーネルを登録しておく
-VS Code / Jupyter から `.venv` を選びやすくする。
-```bash
-.venv/bin/python -m ipykernel install --user --name kaggle-study --display-name "Python (kaggle-study)"
-```
-
-## 5. 走らせる
-ノートブックを上から順に実行。
-- 🧱セル（import・データ読込・描画）はそのまま実行でOK。
-- 🎯セル（`fit` の部分）は**自分で書く**。書くまでは実行するとエラーになる（わざと）。
-- 最後の描画セルで木の絵が出て、`notebooks/day2_tree.png` に保存される。
-
-詳しい「今日やること」は [notebooks/DAY2.md](notebooks/DAY2.md)。
