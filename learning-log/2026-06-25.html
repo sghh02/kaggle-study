@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学習サマリー — 2026-06-25</title>
+<style>
+  :root{
+    --bg:#f5f6fb; --card:#ffffff; --ink:#1f2433; --muted:#6b7280;
+    --line:#e6e8f0; --accent:#5b54e6; --accent-soft:#ecebff;
+    --good:#16a34a; --good-soft:#e7f6ec; --gray:#94a3b8; --gray-soft:#eef1f5;
+    --amber:#d97706; --amber-soft:#fdf1df; --teal:#0d9488; --teal-soft:#e6f7f4;
+    --shadow:0 6px 22px rgba(31,36,51,.07);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",
+      "Segoe UI",sans-serif; line-height:1.75; letter-spacing:.01em;
+  }
+  .wrap{max-width:880px; margin:0 auto; padding:32px 20px 80px}
+
+  .hero{background:linear-gradient(135deg,#5b54e6,#7c6cf0 55%,#9b8bf5);
+    color:#fff; border-radius:20px; padding:30px 32px; box-shadow:var(--shadow)}
+  .hero .date{font-size:.82rem; opacity:.85; letter-spacing:.06em}
+  .hero h1{margin:.25em 0 .15em; font-size:1.6rem; line-height:1.4}
+  .hero p{margin:.4em 0 0; opacity:.92; font-size:.96rem}
+  .hero .goal{display:inline-block; margin-top:16px; background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.35); padding:6px 14px; border-radius:999px;
+    font-size:.84rem; font-weight:600}
+
+  section{margin-top:38px}
+  h2{font-size:1.18rem; margin:0 0 16px; padding-left:12px;
+    border-left:5px solid var(--accent); line-height:1.3}
+  .lead{color:var(--muted); font-size:.92rem; margin:-6px 0 18px}
+
+  .summary{background:var(--card); border:1px solid var(--line); border-radius:16px;
+    padding:22px 24px; box-shadow:var(--shadow); font-size:1.02rem}
+  .summary b{color:var(--accent)}
+
+  .flow{position:relative; margin-left:8px; padding-left:30px; border-left:2px dashed var(--line)}
+  .step{position:relative; margin-bottom:22px}
+  .step:last-child{margin-bottom:0}
+  .step .dot{position:absolute; left:-41px; top:2px; width:26px; height:26px; border-radius:50%;
+    background:var(--accent); color:#fff; font-size:.8rem; font-weight:700;
+    display:flex; align-items:center; justify-content:center; box-shadow:0 0 0 4px var(--accent-soft); z-index:1}
+  .step .card{background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:14px 18px; box-shadow:var(--shadow); cursor:pointer;
+    transition:transform .15s, box-shadow .15s, border-color .15s}
+  .step .card:hover{transform:translateY(-2px); border-color:var(--accent);
+    box-shadow:0 10px 28px rgba(91,84,230,.16)}
+  .step h3{margin:0 0 4px; font-size:1rem}
+  .step p{margin:0; color:var(--muted); font-size:.9rem}
+  .step .why{display:block; margin-top:8px; font-size:.82rem; color:var(--accent); font-weight:600}
+  .step .more{margin-top:10px; display:inline-flex; align-items:center; gap:5px;
+    font-size:.76rem; font-weight:700; color:var(--accent); background:var(--accent-soft);
+    padding:4px 11px; border-radius:999px}
+
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px}
+  .concept{background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:16px 18px; box-shadow:var(--shadow)}
+  .concept .tag{font-size:.72rem; font-weight:700; color:var(--accent); background:var(--accent-soft);
+    padding:3px 9px; border-radius:999px; display:inline-block; margin-bottom:8px}
+  .concept h3{margin:0 0 5px; font-size:1rem}
+  .concept p{margin:0; font-size:.88rem; color:var(--muted)}
+
+  .panel{background:var(--accent-soft); border:1px solid #d9d6ff; border-radius:16px; padding:20px 22px}
+  .panel h3{margin:0 0 10px; font-size:1rem; color:var(--accent)}
+  .chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:6px}
+  .chip{background:#fff; border:1px solid #d9d6ff; border-radius:999px; padding:5px 12px; font-size:.84rem}
+  .chip.label{background:var(--good-soft); border-color:#bfe6c9; color:#0f7a35; font-weight:600}
+
+  .tree{background:var(--card); border:1px solid var(--line); border-radius:16px;
+    padding:22px; box-shadow:var(--shadow); overflow-x:auto}
+  .qbox{display:inline-block; background:#fff; border:2px solid var(--accent); color:var(--accent);
+    font-weight:700; border-radius:10px; padding:8px 14px; font-size:.92rem}
+  .branch{margin:8px 0 0 22px; padding-left:20px; border-left:2px solid var(--line)}
+  .blabel{font-size:.78rem; color:var(--muted); font-weight:600; margin:10px 0 4px}
+  .leaf{display:inline-block; border-radius:999px; padding:5px 14px; font-size:.86rem; font-weight:700}
+  .leaf.yes{background:var(--good-soft); color:#0f7a35; border:1px solid #bfe6c9}
+  .leaf.no{background:var(--gray-soft); color:#475569; border:1px solid #d7dde6}
+  .treenote{margin-top:14px; font-size:.84rem; color:var(--muted)}
+  .treenote b{color:var(--ink)}
+
+  .callout{background:var(--amber-soft); border:1px solid #f3dcb6; border-left:5px solid var(--amber);
+    border-radius:12px; padding:12px 16px; margin-bottom:10px; font-size:.9rem}
+  .callout b{color:var(--amber)}
+
+  .quote{background:linear-gradient(135deg,#1f2433,#2c3350); color:#fff; border-radius:16px;
+    padding:24px 26px; box-shadow:var(--shadow); position:relative}
+  .quote .mark{font-size:2.4rem; line-height:0; opacity:.3; position:absolute; top:22px; left:18px}
+  .quote p{margin:0 0 0 26px; font-size:1.02rem}
+  .quote .hi1{color:#ffd479; font-weight:700}
+  .quote .hi2{color:#9be8b0; font-weight:700}
+  .quote small{display:block; margin:14px 0 0 26px; opacity:.7; font-size:.8rem}
+
+  .next li{margin-bottom:10px; list-style:none}
+  .next ul{padding-left:0}
+  .next .num{display:inline-block; width:24px; height:24px; border-radius:7px;
+    background:var(--accent); color:#fff; text-align:center; font-weight:700;
+    font-size:.82rem; line-height:24px; margin-right:10px; vertical-align:middle}
+
+  footer{margin-top:46px; text-align:center; color:var(--muted); font-size:.8rem}
+
+  /* ===== modal ===== */
+  .modal{position:fixed; inset:0; display:none; z-index:50}
+  .modal.open{display:block}
+  .modal-backdrop{position:absolute; inset:0; background:rgba(20,22,34,.55); backdrop-filter:blur(3px)}
+  .modal-box{position:relative; max-width:660px; margin:5vh auto; width:calc(100% - 32px);
+    background:var(--card); border-radius:18px; box-shadow:0 24px 60px rgba(0,0,0,.3);
+    max-height:90vh; overflow:hidden; display:flex; flex-direction:column; animation:pop .22s ease}
+  @keyframes pop{from{opacity:0; transform:translateY(12px) scale(.98)} to{opacity:1; transform:none}}
+  .modal-head{display:flex; align-items:center; gap:12px; padding:18px 22px; border-bottom:1px solid var(--line)}
+  .modal-head .mnum{width:30px; height:30px; border-radius:50%; background:var(--accent); color:#fff;
+    font-weight:700; display:flex; align-items:center; justify-content:center; flex:0 0 auto}
+  .modal-head .mtitle{font-weight:700; font-size:1.05rem; line-height:1.35}
+  .modal-close{margin-left:auto; border:none; background:var(--gray-soft); width:32px; height:32px;
+    border-radius:50%; font-size:1.2rem; cursor:pointer; color:#475569; line-height:1; flex:0 0 auto}
+  .modal-close:hover{background:#e1e6ee}
+  .modal-body{padding:20px 22px; overflow-y:auto}
+
+  .d-lead{color:var(--muted); margin:0 0 4px; font-size:.95rem}
+  .d-block{border-radius:12px; padding:12px 16px; margin:14px 0; font-size:.92rem; border-left:4px solid}
+  .d-block:last-child{margin-bottom:2px}
+  .d-block .dl{font-size:.72rem; font-weight:800; letter-spacing:.05em; display:block; margin-bottom:5px}
+  .d-block p{margin:.3em 0}
+  .d-block.problem{background:var(--amber-soft); border-color:var(--amber)} .d-block.problem .dl{color:var(--amber)}
+  .d-block.example{background:var(--accent-soft); border-color:var(--accent)} .d-block.example .dl{color:var(--accent)}
+  .d-block.analogy{background:var(--teal-soft); border-color:var(--teal)} .d-block.analogy .dl{color:var(--teal)}
+  .d-block.insight{background:var(--good-soft); border-color:var(--good)} .d-block.insight .dl{color:#0f7a35}
+  .code{font-family:ui-monospace,Menlo,Consolas,monospace; background:#eef0f6; padding:2px 6px;
+    border-radius:5px; font-size:.85em}
+  .vs{display:flex; gap:10px; flex-wrap:wrap; margin:10px 0}
+  .vs > div{flex:1; min-width:180px; background:#fff; border:1px solid var(--line); border-radius:10px; padding:10px 12px; font-size:.86rem}
+  .vs .h{font-weight:700; font-size:.8rem; margin-bottom:3px}
+  .vs .bad .h{color:var(--gray)} .vs .ok .h{color:var(--good)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="date">学習サマリー ・ 2026-06-25（Day 4〜6 一気通し）</div>
+    <h1>ランダムフォレスト → GBDT → 特徴量の "現実"</h1>
+    <p>木1本の限界から始め、森とブースティングを自分で再発明。最後は「特徴量は万能じゃない」という大人の現実まで踏み込んだ濃い1日。</p>
+    <div class="goal">🎯 GBDTを自分で書いてランダムフォレストを超え、"特徴量が効く条件" を体得</div>
+  </div>
+
+  <section>
+    <h2>今日のひとことまとめ</h2>
+    <div class="summary">「木1本は過学習する」を出発点に、<b>ランダムフォレスト</b>（多様な木の多数決）と <b>GBDT</b>（前の木の間違いを順に直す）を対話で再発明した。だが「森は常に最強」ではなく、<b>モデルの複雑さはデータの複雑さに合わせる</b>のが正解だと体感。さらに本物のTitanicデータで<b>特徴量エンジニアリング</b>に挑み、家族数・子供フラグ・肩書きを作っても効かない現実から、<b>「FEが効くのは"モデルが取り出せない情報のギャップ"がある時だけ／だから必ず測って確かめる」</b>に到達した。</div>
+  </section>
+
+  <section>
+    <h2>学びの流れ（どう進んだか）</h2>
+    <p class="lead">各カードをタップすると、その時なにを考えたかの詳細が開きます。</p>
+    <div class="flow">
+
+      <div class="step" data-step="1"><div class="dot">1</div><div class="card">
+        <h3>ランダムフォレストを再発明</h3>
+        <p>木1本＝1人の判断は偏る → 大勢の独立した判断を多数決する</p>
+        <span class="why">↓ でも同じ木ばかりでは平均する意味がない</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+      <div class="step" data-step="2"><div class="dot">2</div><div class="card">
+        <h3>"Random" の正体＝木をバラけさせる2軸</h3>
+        <p>バギング（行を変える）＋ 特徴量のランダム選択（列を絞る）</p>
+        <span class="why">↓ じゃあ本当に木1本より強いのか測ってみる</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+      <div class="step" data-step="3"><div class="dot">3</div><div class="card">
+        <h3>森が "単純データ" で木1本に負ける</h3>
+        <p>予想外。交差検証で 木1本(深さ3) 0.797 ＞ 森 0.768</p>
+        <span class="why">↓ 森の名誉回復が必要。どこなら森が勝つ？</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+      <div class="step" data-step="4"><div class="dot">4</div><div class="card">
+        <h3>"複雑データ" で森が圧勝</h3>
+        <p>交互作用＋ノイズのデータでは 森 0.795 ≫ 木1本 0.681</p>
+        <span class="why">↓ でも森は "独立に多数決" 止まり。もっと賢い集団は？</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+      <div class="step" data-step="5"><div class="dot">5</div><div class="card">
+        <h3>GBDT ＝ 逐次に間違いを直す（道B）</h3>
+        <p>前の木の "やり残し" を次の木が狙い撃ち。ただし足しすぎると過学習</p>
+        <span class="why">↓ 暴走を止めるツマミは？</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+      <div class="step" data-step="6"><div class="dot">6</div><div class="card">
+        <h3>learning_rate（歩幅）と "測り方を揃える"</h3>
+        <p>歩幅は小さく＋木は多めが安全。比較は両者を同じ cv で</p>
+        <span class="why">↓ 道具立てが分かった。自分の手で書く</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+      <div class="step" data-step="7"><div class="dot">7</div><div class="card">
+        <h3>自分で GBDT を書いて森を超えた</h3>
+        <p>GradientBoostingClassifier(lr=0.1, n=300) で 0.806 ＞ 森 0.795</p>
+        <span class="why">↓ ここまで全部 "モデル交換"。データ側を工夫したら？</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+      <div class="step" data-step="8"><div class="dot">8</div><div class="card">
+        <h3>特徴量エンジニアリング ＝ 大人の現実</h3>
+        <p>Titanic で家族数・子供・肩書きを自作 → 全部 0.776 を超えられず</p>
+        <span class="why">↓ "効く条件" を体得して一区切り</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>習得したキー概念</h2>
+    <div class="grid">
+      <div class="concept"><span class="tag">アンサンブル</span>
+        <h3>ランダムフォレスト</h3><p>多様な決定木を大量に作って多数決。1本の過学習を平均でならし、安定させる。</p></div>
+      <div class="concept"><span class="tag">仕組み</span>
+        <h3>バギング</h3><p>木ごとに違う行で学ばせる（元データから復元抽出で引き直す）。木をバラけさせる1軸目。</p></div>
+      <div class="concept"><span class="tag">仕組み</span>
+        <h3>特徴量のランダム選択</h3><p>各分割で使える列を一部だけに絞る。木をバラけさせる2軸目。</p></div>
+      <div class="concept"><span class="tag">アンサンブル</span>
+        <h3>GBDT（勾配ブースティング）</h3><p>木を逐次に建て、前の木が間違えた所を次の木が直す。森より強いが過学習しやすい。</p></div>
+      <div class="concept"><span class="tag">ツマミ</span>
+        <h3>learning_rate（学習率）</h3><p>各修正の "歩幅"。小さいほど慎重で過学習しにくいが、必要な木の本数が増える。</p></div>
+      <div class="concept"><span class="tag">評価</span>
+        <h3>交差検証（cv）</h3><p>データを等分し、テスト役を交代させて全部で採点し平均する。1回の抜き打ちより公平な物差し。</p></div>
+      <div class="concept"><span class="tag">注意</span>
+        <h3>feature_importances</h3><p>各列が稼いだ純度(gini)の合計。分割点が多い連続値が過大評価される "罠" がある。</p></div>
+      <div class="concept"><span class="tag">手法</span>
+        <h3>特徴量エンジニアリング</h3><p>人間が知識で、モデルに無い情報を列にして渡す。効くのは "情報のギャップ" がある時だけ。</p></div>
+      <div class="concept"><span class="tag">現象</span>
+        <h3>過学習（再訪）</h3><p>train は上がるが test は置いてけぼり。深すぎる木でも、木の足しすぎでも起きる。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>題材にした通し例</h2>
+    <div class="panel">
+      <h3>前半：チャット "深まり" 判定（合成データ）／ 後半：Titanic 生存予測（本物）</h3>
+      <p style="margin:.2em 0 .6em; font-size:.9rem; color:#4b4b6b">前半は自作の合成データで手法そのものを検証し、後半は列に "意味がある" 本物のTitanicで特徴量づくりを実践した。</p>
+      <div>Titanic の手がかり：
+        <div class="chips">
+          <span class="chip label">survived（正解：生存=1）</span>
+          <span class="chip">pclass</span>
+          <span class="chip">sex</span>
+          <span class="chip">age</span>
+          <span class="chip">sibsp</span>
+          <span class="chip">parch</span>
+          <span class="chip">fare</span>
+          <span class="chip">embarked</span>
+          <span class="chip">name → title</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>数字で見た今日（誰が勝つかはデータ次第）</h2>
+    <div class="tree">
+      <div class="blabel">① 単純データ：木1本が勝つ</div>
+      <div class="vs">
+        <div class="ok"><div class="h">木1本（深さ3）</div>0.797 ✓</div>
+        <div class="bad"><div class="h">ランダムフォレスト</div>0.768</div>
+      </div>
+      <div class="blabel">② 複雑データ（交互作用＋ノイズ）：森の圧勝</div>
+      <div class="vs">
+        <div class="ok"><div class="h">ランダムフォレスト</div>0.795 ✓</div>
+        <div class="bad"><div class="h">木1本（深さ3）</div>0.681</div>
+      </div>
+      <div class="blabel">③ 複雑データ：自作 GBDT が森を超える</div>
+      <div class="vs">
+        <div class="ok"><div class="h">GBDT（自作・lr0.1×300本）</div>0.806 ✓</div>
+        <div class="bad"><div class="h">ランダムフォレスト</div>0.795</div>
+      </div>
+      <div class="blabel">④ Titanic：特徴量を作っても動かない</div>
+      <div class="vs">
+        <div class="bad"><div class="h">ベースライン（生の列）</div>0.776</div>
+        <div class="bad"><div class="h">+ family_size / is_child / title</div>≈ 0.776（誤差範囲）</div>
+      </div>
+      <p class="treenote"><b>結論：</b>同じ "木 vs 森 vs GBDT" でも、勝者はデータの複雑さで入れ替わる。そして特徴量は、モデルが既に持っている情報の組み替えでは <b>効かない</b>。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>途中で踏んだ "ワナ"（実務の勘所）</h2>
+    <div class="callout"><b>森とGBDTは性格が逆：</b>ランダムフォレストは木を増やしても悪化しにくいが、GBDTは <b>増やしすぎると過学習</b>（test が山なりに下がる）。"とりあえず増やす" が通用しない。</div>
+    <div class="callout"><b>比較は測り方を揃える：</b><span class="code">cross_val_score</span> は cv を省くとデフォルト5分割。森を cv=10、GBDTを cv=5 で比べるのは "長さの違う物差しで身長比べ"。</div>
+    <div class="callout"><b>feature_importances の連続値びいき：</b>fare/age は分割点が無数にあり重要度を稼ぐが、二択の sex は過小評価される。"一番キレイに分ける" 列とズレる。鵜呑み禁物。</div>
+    <div class="callout"><b>特徴量は万能じゃない：</b>持っている列の組み替え（足し算・しきい値）は新情報ゼロで効かない。効くのは "情報のギャップ" がある時だけ。作ったら <b>必ず cv で測って見極める</b>。</div>
+  </section>
+
+  <section>
+    <h2>到達点の一文</h2>
+    <div class="quote">
+      <span class="mark">“</span>
+      <p>決定木 → ランダムフォレスト → GBDT は、ぜんぶ <span class="hi1">過学習をどう抑えるか</span> の物語。特徴量エンジニアリングは <span class="hi2">モデルに無い情報を足す</span> 作業——でも効くのは "情報のギャップ" がある時だけ。だから何をやっても、最後は必ず measure して確かめる。</p>
+      <small>── 後輩に説明するなら、の集大成</small>
+    </div>
+  </section>
+
+  <section>
+    <h2>次回の入口</h2>
+    <div class="next">
+      <ul>
+        <li><span class="num">1</span><b>LightGBM</b> ── GBDTの高速・高精度版。Kaggleの主力にして、この学習の最終目標。</li>
+        <li><span class="num">2</span><b>上級の特徴量</b> ── 家族・グループ生存など "乗客をまたぐ新情報"。効くがリーク（カンニング）と紙一重。</li>
+        <li><span class="num">3</span><b>評価指標の使い分け</b> ── 正解率だけでない（precision / recall / AUC）。</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>機械学習 自走学習プロジェクト ・ Day 4–6 ・ 2026-06-25</footer>
+
+</div>
+
+<!-- ===== modal（変更しない） ===== -->
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="modal-backdrop"></div>
+  <div class="modal-box" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <span class="mnum">1</span><span class="mtitle">タイトル</span>
+      <button class="modal-close" aria-label="閉じる">×</button>
+    </div>
+    <div class="modal-body"></div>
+  </div>
+</div>
+
+<!-- ===== step details（hidden source） ===== -->
+<div style="display:none">
+
+  <div class="detail-content" data-detail="1">
+    <p class="d-lead">Day 3 で「木1本は過学習する」とわかった。その弱点をどう乗り越えるかが出発点。</p>
+    <div class="d-block problem"><span class="dl">困りごと</span><p>深い木は丸暗記（train98% / test73%）、浅い木は安定だが頭打ち。木1本＝1人の判断は、偶然のクセに引っ張られて偏る。</p></div>
+    <div class="d-block analogy"><span class="dl">たとえ</span><p>開発で1人の実装をそのままマージせずレビューを入れるように、1人の判断に全部を委ねない。大勢に独立に見積もらせて平均すると、各自の偏りが打ち消し合う（集合知・ダーツの平均が中心に寄る）。</p></div>
+    <div class="d-block insight"><span class="dl">気づき</span><p>間違いの "方向" が木ごとにバラバラなら、平均で打ち消される。一方、本物のパターンはどの木も共通で当てるので平均しても残る。</p></div>
+  </div>
+
+  <div class="detail-content" data-detail="2">
+    <p class="d-lead">「平均すれば良い」には条件がある。同じデータに同じ木を作ったら全部同じ＝平均する意味がない。</p>
+    <div class="d-block example"><span class="dl">具体例</span><p><b>バギング</b>＝木ごとに違う行で学ぶ（元の400件から復元抽出で400件引き直す＝重複や欠けが出る）。<b>特徴量のランダム選択</b>＝各分割で使える列を一部だけに絞る。</p></div>
+    <div class="d-block insight"><span class="dl">気づき</span><p>この2つで木をわざとバラけさせ、多数決する。これがランダムフォレストの "Random" の正体。決定木を対話だけで森まで拡張できた。</p></div>
+  </div>
+
+  <div class="detail-content" data-detail="3">
+    <p class="d-lead">「森は木1本より強いはず」と自信満々で測ったら、予想が外れた。</p>
+    <div class="d-block problem"><span class="dl">困りごと</span><p>合成データを 10分割の交差検証で測ると、木1本(深さ3) <span class="code">0.797</span> ＞ ランダムフォレスト <span class="code">0.768</span>。森が負けた。</p></div>
+    <div class="d-block insight"><span class="dl">気づき</span><p>森が弱いのではなく、<b>単純なデータには単純なモデルが最適</b>。きれいな分かれ目を浅い木が一発で掴めるので、森の "ブレ取り" の出番がなかっただけ。</p></div>
+  </div>
+
+  <div class="detail-content" data-detail="4">
+    <p class="d-lead">森が本領を出せる土俵＝「木1本では掴みきれないデータ」を用意して名誉回復。</p>
+    <div class="d-block example"><span class="dl">具体例</span><p>交互作用（<span class="code">cue1 XOR cue2</span> 等）＋ 囮のノイズ列を仕込んだ複雑データでは、ランダムフォレスト <span class="code">0.795</span> ≫ 木1本 <span class="code">0.681</span>。深い木1本はむしろ 0.634 に悪化。</p></div>
+    <div class="d-block insight"><span class="dl">気づき</span><p><b>モデルの複雑さは、データの複雑さに合わせる。</b>森が圧勝するのは、一本の木では捉えきれない複雑なデータのとき＝現実／Kaggle。</p></div>
+  </div>
+
+  <div class="detail-content" data-detail="5">
+    <p class="d-lead">森は "独立に多数決" 止まり。誰も前の人の失敗を踏まえていない。そこを変える。</p>
+    <div class="d-block analogy"><span class="dl">たとえ</span><p>ラフに書く → レビューで指摘 → そこだけ直す → また指摘…の繰り返し。次の木の仕事は、前までの木が間違えた所を狙い撃ちで直すこと（＝最初に自分で言った "改善を繰り返す" 道B）。</p></div>
+    <div class="d-block problem"><span class="dl">困りごと</span><p>直し続けると、直しようのないノイズまで暗記し始める。実際 test は 75本でピーク → 以降ジリ下がり、train は 1.000＝完全な丸暗記。</p></div>
+    <div class="d-block insight"><span class="dl">気づき</span><p>Day 3 の "深さカーブ" と同じ山なりが、今度は "木の本数" の軸で出る。森は増やしても悪化しにくいが、GBDTは <b>増やしすぎ注意</b>。</p></div>
+  </div>
+
+  <div class="detail-content" data-detail="6">
+    <p class="d-lead">暴走を止めるツマミ＝learning_rate（各修正の歩幅）。</p>
+    <div class="d-block example"><span class="dl">具体例</span><p>歩幅を小さく（0.05〜0.1）＋木を多めにすると、増やしすぎても崩れにくい＝安全マージンが広い。代償は計算量が増えること。</p></div>
+    <div class="d-block analogy"><span class="dl">たとえ</span><p>レビューで "一度に全書き換え"（大股）より、"小さく直して様子見"（小股）の方が事故らない。</p></div>
+    <div class="d-block insight"><span class="dl">気づき</span><p>比較は両者を同じ測り方で。<span class="code">cross_val_score</span> は cv 省略でデフォルト5分割になり、森(cv=10)と揃わない＝フェアじゃない。"長さの違う物差しで身長比べ"。</p></div>
+  </div>
+
+  <div class="detail-content" data-detail="7">
+    <p class="d-lead">道具立てが揃ったので、本筋を自分の手で書いた。</p>
+    <div class="d-block example"><span class="dl">具体例</span><p><span class="code">GradientBoostingClassifier(learning_rate=0.1, n_estimators=300)</span> を自作。複雑データで 森 0.795 を <span class="code">0.806</span> で上回った。歩幅小×本数多のバランスが効いた（lr0.05×400本だと "練習不足" で負ける）。</p></div>
+    <div class="d-block insight"><span class="dl">気づき</span><p>差は小さい（ほぼ誤差）が、「道B（逐次改善）は、ちゃんと調整すれば最強の森に勝てる」を実証。これが Kaggle で GBDT / LightGBM が定番武器な理由。</p></div>
+  </div>
+
+  <div class="detail-content" data-detail="8">
+    <p class="d-lead">ここまで全部 "モデル交換"。今度はデータ側を人間が工夫する＝特徴量エンジニアリング。題材は本物の Titanic。</p>
+    <div class="d-block problem"><span class="dl">困りごと</span><p>仮説（女性・子供・身分が効く）は当たっていたのに、<span class="code">family_size</span> / <span class="code">is_child</span> / <span class="code">title</span> を自作しても、全部ベースライン 0.776 を超えられない（誤差範囲）。</p></div>
+    <div class="d-block example"><span class="dl">具体例</span><p>title（Mr/Mrs/Miss/Master）は生存率が 0.16〜0.79 で激しく割れる "優秀な情報"。なのに効かない＝中身は sex＋age で、GBDTが既に持っているから。</p></div>
+    <div class="d-block insight"><span class="dl">気づき</span><p>良い特徴量＝モデルが自力で取り出せない "新情報" を足すもの。偽データのXORは隠れて掘れない→FE劇的。Titanicは生の列に信号があり掘れる→FE効かず。<b>FEが効くのは情報のギャップがある時だけ。だから必ず測って見極める。</b></p></div>
+  </div>
+
+</div>
+
+<script>
+  (function(){
+    var modal = document.getElementById('modal');
+    var mbody = modal.querySelector('.modal-body');
+    var mnum  = modal.querySelector('.mnum');
+    var mtitle= modal.querySelector('.mtitle');
+
+    function openStep(step){
+      var n = step.getAttribute('data-step');
+      var d = document.querySelector('.detail-content[data-detail="'+n+'"]');
+      if(!d) return;
+      mnum.textContent = n;
+      mtitle.textContent = step.querySelector('h3').textContent;
+      mbody.innerHTML = d.innerHTML;
+      mbody.scrollTop = 0;
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden','false');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal(){
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+    }
+
+    var steps = document.querySelectorAll('.step');
+    for(var i=0;i<steps.length;i++){
+      (function(step){
+        step.querySelector('.card').addEventListener('click', function(){ openStep(step); });
+      })(steps[i]);
+    }
+    modal.querySelector('.modal-close').addEventListener('click', closeModal);
+    modal.querySelector('.modal-backdrop').addEventListener('click', closeModal);
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
+  })();
+</script>
+
+</body>
+</html>
