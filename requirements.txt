@@ -7,3 +7,4 @@ lightgbm==4.6.0
 matplotlib==3.11.0
 jupyterlab==4.6.0
 ipykernel==7.3.0
+kaggle==2.2.3  # 本番コンペのデータ取得・提出を行う CLI（Day8〜）
