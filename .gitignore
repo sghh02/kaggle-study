@@ -10,3 +10,11 @@ __pycache__/
 
 # 学習で生成される画像（必要なら個別に外す）
 notebooks/*.png
+
+# Kaggle からダウンロードしたコンペデータ（規約上コミットしない）
+competition/*/data/
+*.zip
+
+# 提出ファイル（生成物）
+submission.csv
+competition/*/submissions/*.csv
