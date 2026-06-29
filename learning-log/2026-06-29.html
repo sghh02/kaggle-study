@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学習サマリー — 2026-06-29</title>
+<style>
+  :root{
+    --bg:#f5f6fb; --card:#ffffff; --ink:#1f2433; --muted:#6b7280;
+    --line:#e6e8f0; --accent:#5b54e6; --accent-soft:#ecebff;
+    --good:#16a34a; --good-soft:#e7f6ec; --gray:#94a3b8; --gray-soft:#eef1f5;
+    --amber:#d97706; --amber-soft:#fdf1df; --teal:#0d9488; --teal-soft:#e6f7f4;
+    --shadow:0 6px 22px rgba(31,36,51,.07);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",
+      "Segoe UI",sans-serif; line-height:1.75; letter-spacing:.01em;
+  }
+  .wrap{max-width:880px; margin:0 auto; padding:32px 20px 80px}
+
+  .hero{background:linear-gradient(135deg,#5b54e6,#7c6cf0 55%,#9b8bf5);
+    color:#fff; border-radius:20px; padding:30px 32px; box-shadow:var(--shadow)}
+  .hero .date{font-size:.82rem; opacity:.85; letter-spacing:.06em}
+  .hero h1{margin:.25em 0 .15em; font-size:1.6rem; line-height:1.4}
+  .hero p{margin:.4em 0 0; opacity:.92; font-size:.96rem}
+  .hero .goal{display:inline-block; margin-top:16px; background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.35); padding:6px 14px; border-radius:999px;
+    font-size:.84rem; font-weight:600}
+
+  section{margin-top:38px}
+  h2{font-size:1.18rem; margin:0 0 16px; padding-left:12px;
+    border-left:5px solid var(--accent); line-height:1.3}
+  .lead{color:var(--muted); font-size:.92rem; margin:-6px 0 18px}
+
+  .summary{background:var(--card); border:1px solid var(--line); border-radius:16px;
+    padding:22px 24px; box-shadow:var(--shadow); font-size:1.02rem}
+  .summary b{color:var(--accent)}
+
+  .flow{position:relative; margin-left:8px; padding-left:30px; border-left:2px dashed var(--line)}
+  .step{position:relative; margin-bottom:22px}
+  .step:last-child{margin-bottom:0}
+  .step .dot{position:absolute; left:-41px; top:2px; width:26px; height:26px; border-radius:50%;
+    background:var(--accent); color:#fff; font-size:.8rem; font-weight:700;
+    display:flex; align-items:center; justify-content:center; box-shadow:0 0 0 4px var(--accent-soft); z-index:1}
+  .step .card{background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:14px 18px; box-shadow:var(--shadow); cursor:pointer;
+    transition:transform .15s, box-shadow .15s, border-color .15s}
+  .step .card:hover{transform:translateY(-2px); border-color:var(--accent);
+    box-shadow:0 10px 28px rgba(91,84,230,.16)}
+  .step h3{margin:0 0 4px; font-size:1rem}
+  .step p{margin:0; color:var(--muted); font-size:.9rem}
+  .step .why{display:block; margin-top:8px; font-size:.82rem; color:var(--accent); font-weight:600}
+  .step .more{margin-top:10px; display:inline-flex; align-items:center; gap:5px;
+    font-size:.76rem; font-weight:700; color:var(--accent); background:var(--accent-soft);
+    padding:4px 11px; border-radius:999px}
+
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px}
+  .concept{background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:16px 18px; box-shadow:var(--shadow)}
+  .concept .tag{font-size:.72rem; font-weight:700; color:var(--accent); background:var(--accent-soft);
+    padding:3px 9px; border-radius:999px; display:inline-block; margin-bottom:8px}
+  .concept h3{margin:0 0 5px; font-size:1rem}
+  .concept p{margin:0; font-size:.88rem; color:var(--muted)}
+
+  .panel{background:var(--accent-soft); border:1px solid #d9d6ff; border-radius:16px; padding:20px 22px}
+  .panel h3{margin:0 0 10px; font-size:1rem; color:var(--accent)}
+  .chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:6px}
+  .chip{background:#fff; border:1px solid #d9d6ff; border-radius:999px; padding:5px 12px; font-size:.84rem}
+  .chip.label{background:var(--good-soft); border-color:#bfe6c9; color:#0f7a35; font-weight:600}
+
+  .tree{background:var(--card); border:1px solid var(--line); border-radius:16px;
+    padding:22px; box-shadow:var(--shadow); overflow-x:auto}
+  .qbox{display:inline-block; background:#fff; border:2px solid var(--accent); color:var(--accent);
+    font-weight:700; border-radius:10px; padding:8px 14px; font-size:.92rem}
+  .branch{margin:8px 0 0 22px; padding-left:20px; border-left:2px solid var(--line)}
+  .blabel{font-size:.78rem; color:var(--muted); font-weight:600; margin:10px 0 4px}
+  .leaf{display:inline-block; border-radius:999px; padding:5px 14px; font-size:.86rem; font-weight:700}
+  .leaf.yes{background:var(--good-soft); color:#0f7a35; border:1px solid #bfe6c9}
+  .leaf.no{background:var(--gray-soft); color:#475569; border:1px solid #d7dde6}
+  .treenote{margin-top:14px; font-size:.84rem; color:var(--muted)}
+  .treenote b{color:var(--ink)}
+
+  .callout{background:var(--amber-soft); border:1px solid #f3dcb6; border-left:5px solid var(--amber);
+    border-radius:12px; padding:12px 16px; margin-bottom:10px; font-size:.9rem}
+  .callout b{color:var(--amber)}
+
+  .quote{background:linear-gradient(135deg,#1f2433,#2c3350); color:#fff; border-radius:16px;
+    padding:24px 26px; box-shadow:var(--shadow); position:relative}
+  .quote .mark{font-size:2.4rem; line-height:0; opacity:.3; position:absolute; top:22px; left:18px}
+  .quote p{margin:0 0 0 26px; font-size:1.02rem}
+  .quote .hi1{color:#ffd479; font-weight:700}
+  .quote .hi2{color:#9be8b0; font-weight:700}
+  .quote small{display:block; margin:14px 0 0 26px; opacity:.7; font-size:.8rem}
+
+  .next li{margin-bottom:10px; list-style:none}
+  .next ul{padding-left:0}
+  .next .num{display:inline-block; width:24px; height:24px; border-radius:7px;
+    background:var(--accent); color:#fff; text-align:center; font-weight:700;
+    font-size:.82rem; line-height:24px; margin-right:10px; vertical-align:middle}
+
+  footer{margin-top:46px; text-align:center; color:var(--muted); font-size:.8rem}
+
+  /* ===== modal ===== */
+  .modal{position:fixed; inset:0; display:none; z-index:50}
+  .modal.open{display:block}
+  .modal-backdrop{position:absolute; inset:0; background:rgba(20,22,34,.55); backdrop-filter:blur(3px)}
+  .modal-box{position:relative; max-width:660px; margin:5vh auto; width:calc(100% - 32px);
+    background:var(--card); border-radius:18px; box-shadow:0 24px 60px rgba(0,0,0,.3);
+    max-height:90vh; overflow:hidden; display:flex; flex-direction:column; animation:pop .22s ease}
+  @keyframes pop{from{opacity:0; transform:translateY(12px) scale(.98)} to{opacity:1; transform:none}}
+  .modal-head{display:flex; align-items:center; gap:12px; padding:18px 22px; border-bottom:1px solid var(--line)}
+  .modal-head .mnum{width:30px; height:30px; border-radius:50%; background:var(--accent); color:#fff;
+    font-weight:700; display:flex; align-items:center; justify-content:center; flex:0 0 auto}
+  .modal-head .mtitle{font-weight:700; font-size:1.05rem; line-height:1.35}
+  .modal-close{margin-left:auto; border:none; background:var(--gray-soft); width:32px; height:32px;
+    border-radius:50%; font-size:1.2rem; cursor:pointer; color:#475569; line-height:1; flex:0 0 auto}
+  .modal-close:hover{background:#e1e6ee}
+  .modal-body{padding:20px 22px; overflow-y:auto}
+
+  .d-lead{color:var(--muted); margin:0 0 4px; font-size:.95rem}
+  .d-block{border-radius:12px; padding:12px 16px; margin:14px 0; font-size:.92rem; border-left:4px solid}
+  .d-block:last-child{margin-bottom:2px}
+  .d-block .dl{font-size:.72rem; font-weight:800; letter-spacing:.05em; display:block; margin-bottom:5px}
+  .d-block p{margin:.3em 0}
+  .d-block.problem{background:var(--amber-soft); border-color:var(--amber)} .d-block.problem .dl{color:var(--amber)}
+  .d-block.example{background:var(--accent-soft); border-color:var(--accent)} .d-block.example .dl{color:var(--accent)}
+  .d-block.analogy{background:var(--teal-soft); border-color:var(--teal)} .d-block.analogy .dl{color:var(--teal)}
+  .d-block.insight{background:var(--good-soft); border-color:var(--good)} .d-block.insight .dl{color:#0f7a35}
+  .code{font-family:ui-monospace,Menlo,Consolas,monospace; background:#eef0f6; padding:2px 6px;
+    border-radius:5px; font-size:.85em}
+  .vs{display:flex; gap:10px; flex-wrap:wrap; margin:10px 0}
+  .vs > div{flex:1; min-width:180px; background:#fff; border:1px solid var(--line); border-radius:10px; padding:10px 12px; font-size:.86rem}
+  .vs .h{font-weight:700; font-size:.8rem; margin-bottom:3px}
+  .vs .bad .h{color:var(--gray)} .vs .ok .h{color:var(--good)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="date">学習サマリー ・ 2026-06-29（Kaggle Titanic 本番）</div>
+    <h1>過学習を見抜き、"正直な物差し"で gender の壁を破る — public 0.787</h1>
+    <p>高いCVに飛びつかず、まず採点が信用できるか確かめ、過学習を減らし、本当に新しい情報だけを足して本番スコアを積み上げた1日。</p>
+    <div class="goal">🎯 gender ベースライン 0.766 を突破 → public 0.78708（自己ベスト）</div>
+  </div>
+
+  <section>
+    <h2>今日のひとことまとめ</h2>
+    <div class="summary">最初のモデルは<b>手元CV 0.846 と高いのに本番 0.758</b>と低く、雑なベースラインにすら負けていた。原因を「特徴量不足」と決めつけず、まず<b>物差し（CV）が信用できるか</b>を疑い、<b>過学習</b>を体温計（丸暗記 vs 初見）で診断。<b>複数seed平均の正直なCV</b>を土台にして<b>過学習ギャップ</b>を縮め、最後に「他人の生死」という<b>本当に新しい情報（家族生死）</b>だけを足して、gender の壁を破った。結論は<b>「CVの数字より、本番に効くのは過学習の小ささと新しい情報。互角ならシンプルが正義」</b>。</div>
+  </section>
+
+  <section>
+    <h2>学びの流れ（どう進んだか）</h2>
+    <p class="lead">各カードをタップすると、その時なにを考えたかの詳細が開きます。</p>
+    <div class="flow">
+
+      <div class="step" data-step="1"><div class="dot">1</div><div class="card">
+        <h3>状況把握：CVは高いのに本番が低い謎</h3>
+        <p>手元CV 0.846 なのに public 0.758。雑な性別ベースライン(0.766)以下。</p>
+        <span class="why">↓ 「採点が2種類ある」と気づいた</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+      <div class="step" data-step="2"><div class="dot">2</div><div class="card">
+        <h3>改善の"考える順番"を決める</h3>
+        <p>特徴量を足す前に、物差し→原因→改善→記録の順で攻める。</p>
+        <span class="why">↓ まず物差しを疑うことに</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+      <div class="step" data-step="3"><div class="dot">3</div><div class="card">
+        <h3>過学習の診断（体温計）</h3>
+        <p>丸暗記の点(train 0.928) vs 初見の点(CV 0.846)。差が大きい＝過学習。</p>
+        <span class="why">↓ seedで揺れる＝0.846は当たりくじと判明</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+      <div class="step" data-step="4"><div class="dot">4</div><div class="card">
+        <h3>正直な物差しを作る</h3>
+        <p>5分割×5seed＝25回を平均。本当の実力は 0.833 だった。</p>
+        <span class="why">↓ 信用できる物差しの上で改善を始める</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+      <div class="step" data-step="5"><div class="dot">5</div><div class="card">
+        <h3>特徴量を増やしても効かない発見</h3>
+        <p>甲板・運賃ビン等7個追加 → CVは動かず、むしろ悪化。</p>
+        <span class="why">↓ 「測って効いたものだけ残す」へ</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+      <div class="step" data-step="6"><div class="dot">6</div><div class="card">
+        <h3>gap半減＋アンサンブル：gapが本番を当てる</h3>
+        <p>250通り探索でgapを0.095→0.044に。public 0.758→0.763。</p>
+        <span class="why">↓ CVより"gapの小ささ"が本番を当てた</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+      <div class="step" data-step="7"><div class="dot">7</div><div class="card">
+        <h3>家族生死 FamilySurv で壁を突破</h3>
+        <p>「他人の生死」を特徴量化。honest CV 0.848 / public 0.780。</p>
+        <span class="why">↓ これだけが"本当に新しい情報"だった</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+      <div class="step" data-step="8"><div class="dot">8</div><div class="card">
+        <h3>改善は頭打ち＝引き際を知る</h3>
+        <p>子ども/母親/大家族フラグも連続値化も、全部ノイズの範囲。</p>
+        <span class="why">↓ 「言い換え」は効かないと実証</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+      <div class="step" data-step="9"><div class="dot">9</div><div class="card">
+        <h3>提出の仕組みを理解（CSV / 答えを隠す理由）</h3>
+        <p>モデルでなく予測のCSVを提出。test に正解が無い理由まで腑に落ちた。</p>
+        <span class="why">↓ MLの価値は"バカより何点上か"で測る</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+      <div class="step" data-step="10"><div class="dot">10</div><div class="card">
+        <h3>シンプル化で自己ベスト 0.787</h3>
+        <p>アンサンブルを LightGBM単体に戻して提出 → public 0.78708。</p>
+        <span class="why">↓ 互角ならシンプルが正解（オッカムの剃刀）</span>
+        <span class="more">タップで詳細 →</span>
+      </div></div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>習得したキー概念</h2>
+    <div class="grid">
+      <div class="concept"><span class="tag">過学習</span>
+        <h3>丸暗記 vs 初見</h3><p>勉強したデータ(train)の点だけ高く、見たことないデータ(CV)で落ちる状態。答えを覚えただけで考え方が身についてない。</p></div>
+      <div class="concept"><span class="tag">指標</span>
+        <h3>過学習ギャップ</h3><p>train accuracy − CV。差が大きいほど「覚えただけ」。本番で落ちる量の目安＝体温計。</p></div>
+      <div class="concept"><span class="tag">評価</span>
+        <h3>正直なCV</h3><p>1回の分割は当たり外れがある。seedを複数変えて平均すると、まぐれを消した本当の実力が出る。</p></div>
+      <div class="concept"><span class="tag">評価</span>
+        <h3>CV ≠ public</h3><p>手元CVと本番スコアは別物。Titanicは本番が418人と小さく荒れるため、CVより約0.06低く出る。</p></div>
+      <div class="concept"><span class="tag">落とし穴</span>
+        <h3>データリーク</h3><p>未来や検証データの「答え」をうっかり特徴量に混ぜること。CVだけ上がり本番で崩れる。</p></div>
+      <div class="concept"><span class="tag">モデル</span>
+        <h3>アンサンブル</h3><p>間違え方が違う複数モデルの多数決。個々のクセが打ち消し合い、過学習gapが小さく本番で安定。</p></div>
+      <div class="concept"><span class="tag">特徴量</span>
+        <h3>言い換えは無意味</h3><p>決定木はAgeやFamilySizeから「子どもか」「大家族か」を自分で作れる。既存特徴の言い換えは新情報ゼロ。</p></div>
+      <div class="concept"><span class="tag">特徴量</span>
+        <h3>家族生死 FamilySurv</h3><p>本人の属性でなく「同じ家族・グループの他人の生死」。gender ルールの例外を当てる唯一効いた新情報。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>題材にした通し例</h2>
+    <div class="panel">
+      <h3>Kaggle Titanic（乗客の生死予測）</h3>
+      <p style="margin:.2em 0 .6em; font-size:.9rem; color:#4b4b6b">答え付きの train(891人) で学習し、答えの無い test(418人) の生死を予測してCSVで提出。評価指標は accuracy。</p>
+      <div>使った特徴量（11個）：
+        <div class="chips">
+          <span class="chip">Pclass</span><span class="chip">Sex</span><span class="chip">Age</span>
+          <span class="chip">Fare</span><span class="chip">Embarked</span><span class="chip">FamilySize</span>
+          <span class="chip">IsAlone</span><span class="chip">Title</span><span class="chip">Deck</span>
+          <span class="chip">HasCabin</span><span class="chip">★ FamilySurv</span>
+        </div>
+      </div>
+      <div style="margin-top:14px">public スコアの歩み：
+        <div class="chips">
+          <span class="chip label">0.758 過学習</span>
+          <span class="chip label">0.763 gap改善</span>
+          <span class="chip label">0.780 家族生死</span>
+          <span class="chip label">0.787 単体・自己ベスト</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>モデルの中身（決定木＝if文の自動化）</h2>
+    <div class="tree">
+      <div class="qbox">性別(Sex)は？</div>
+      <div class="branch">
+        <div class="blabel">女性 →</div>
+        <span class="leaf yes">生存（女性は74%）</span>
+        <div class="branch">
+          <div class="blabel">でも家族が全滅（FamilySurv=0）なら →</div>
+          <span class="leaf no">死亡（gender の例外を拾う）</span>
+        </div>
+      </div>
+      <div class="branch">
+        <div class="blabel">男性 →</div>
+        <span class="leaf no">死亡（男性は19%）</span>
+        <div class="branch">
+          <div class="blabel">でも家族が生還（FamilySurv=1）なら →</div>
+          <span class="leaf yes">生存（gender の例外を拾う）</span>
+        </div>
+      </div>
+      <p class="treenote">大枠は <b>Sex</b> が決める（だから性別ベースラインで0.766取れる）。<b>FamilySurv</b> は、その性別ルールでは取れない<b>例外</b>を当てる役。LightGBMはこの枝分かれを人が書くのではなく<b>データから自動で引く</b>。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>途中で踏んだ "ワナ"（実務の勘所）</h2>
+    <div class="callout"><b>当たりくじCV：</b>1回の分割で出た高いCV(seed42=0.846)を信じると、まぐれを実力と勘違いする。正直な値は0.833だった。</div>
+    <div class="callout"><b>CVへの過学習：</b>手元CVだけ追いかけると、CVには効くが本番で崩れる打ち手を選んでしまう。だから "gapの小ささ" も一緒に見る。</div>
+    <div class="callout"><b>特徴量は多いほど良い、という誤解：</b>891行と小さいデータでは、焼き直し特徴量は過学習を増やすだけで本番は動かない。</div>
+    <div class="callout"><b>public も1回ぶんの模試：</b>単体0.787がアンサンブル0.780に勝ったが、差は418人中3人＝ノイズ。本番スコア差を実力差と読まない。</div>
+  </section>
+
+  <section>
+    <h2>到達点の一文</h2>
+    <div class="quote">
+      <span class="mark">“</span>
+      <p>高いCVに飛びつかず、まず<span class="hi1">物差しを正直にして</span>、過学習を減らし、<span class="hi2">本当に新しい情報（家族の生死）</span>だけを足す——その一連の判断が、本番の数字で gender の壁を破って 0.787 に結実した。互角なら、シンプルな方を選ぶ。</p>
+      <small>── 機械学習で大事なのは生の正解率ではなく「何も考えないやり方より、どれだけ上を出せたか」</small>
+    </div>
+  </section>
+
+  <section>
+    <h2>次回の入口</h2>
+    <div class="next">
+      <ul>
+        <li><span class="num">1</span><b>同じ"型"を別コンペで</b> ── 物差しを正直に → 過学習を診断 → 新情報を足す、の流れは他の表形式コンペでもそのまま使える。</li>
+        <li><span class="num">2</span><b>0.80 に挑む攻めた手</b> ── 「女性・子どもグループ救済」を予測の上書きルールとして使う（小細工寄り・リーク管理がシビア）。</li>
+        <li><span class="num">3</span><b>GBDT の仕組みを深掘り</b> ── LightGBM が「木を継ぎ足して前の間違いを直す」中身（勾配ブースティング）を、if文の延長として腹落ちさせる。</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>機械学習 自走学習プロジェクト ・ Kaggle Titanic 本番 ・ 2026-06-29</footer>
+
+</div>
+
+<!-- ===== modal（変更しない） ===== -->
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="modal-backdrop"></div>
+  <div class="modal-box" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <span class="mnum">1</span><span class="mtitle">タイトル</span>
+      <button class="modal-close" aria-label="閉じる">×</button>
+    </div>
+    <div class="modal-body"></div>
+  </div>
+</div>
+
+<!-- ===== step details（hidden source） ===== -->
+<div style="display:none">
+
+  <div class="detail-content" data-detail="1">
+    <p class="d-lead">最初のLightGBMモデルの数字が、ちぐはぐだった。</p>
+    <div class="d-block problem"><span class="dl">困りごと</span><p>手元CV <span class="code">0.846</span> と高いのに、Kaggle本番(public)は <span class="code">0.758</span>。性別だけで当てる雑なベースライン(<span class="code">0.766</span>)にすら負けていた。</p></div>
+    <div class="d-block analogy"><span class="dl">たとえ</span><p>採点には2種類ある。手元CV＝<b>自分で作る模試</b>、public＝<b>本番テスト</b>。模試85点なのに本番75点なら、まず「自分の模試、本番とズレてない？」を疑うべき。</p></div>
+    <div class="d-block insight"><span class="dl">気づき</span><p>低スコアの原因を「特徴量が足りない」と決めつけて足し始めるのは早い。まず物差し（CV）を疑うのが先。</p></div>
+  </div>
+
+  <div class="detail-content" data-detail="2">
+    <p class="d-lead">改善で最初にやるべきは「特徴量を足す」ではない、という順番を決めた。</p>
+    <div class="d-block example"><span class="dl">考える順番</span><p>① 物差し(CV)が信用できるか確かめる → ② CVと本番のズレの原因を探す → ③ 直してから1つずつ改善 → ④ 毎回記録。多くの人が③から飛びつくが、①②を飛ばすと振り回される。</p></div>
+    <div class="d-block analogy"><span class="dl">たとえ</span><p>体調が悪いとき、いきなり薬を飲むんじゃなく、まず<b>健康診断（検査）</b>で「どこが悪いか」を突き止める。今日の前半はこの検査。</p></div>
+  </div>
+
+  <div class="detail-content" data-detail="3">
+    <p class="d-lead">「なぜ模試と本番が10点ズレるのか」を、検査で突き止めた。</p>
+    <div class="d-block example"><span class="dl">体温計</span><p>「丸暗記の点(train) <span class="code">0.928</span>」と「初見の点(CV) <span class="code">0.846</span>」を並べた。その差(gap)が大きい＝答えを覚えただけ＝<b>過学習</b>。さらにseedを変えるとCVが <span class="code">0.82〜0.85</span> に揺れ、0.846は"当たりくじ"だった。</p></div>
+    <div class="d-block analogy"><span class="dl">たとえ</span><p>問題集を丸暗記して解き直すと92点、でも初見の模試は84点。この<b>差＝丸暗記度</b>。差が大きいほど「理解してない」。</p></div>
+    <div class="d-block insight"><span class="dl">気づき</span><p>1回の分割で出た高いCVを信じてはいけない。当たりくじを実力と勘違いするのが最初のワナだった。</p></div>
+  </div>
+
+  <div class="detail-content" data-detail="4">
+    <p class="d-lead">まぐれに騙されない「正直な物差し」を先に作った。</p>
+    <div class="d-block example"><span class="dl">具体例</span><p>5分割(5-fold)を5通りのseedで繰り返し、計<b>25回</b>採点して平均。出力 <span class="code">0.8438 ± 0.0256</span> は、その25個の平均±ブレ幅。本当の実力は <span class="code">0.833</span> 付近で、0.846は盛れていた。</p></div>
+    <div class="d-block insight"><span class="dl">気づき</span><p>個々のfoldは 0.80〜0.88 まで激しく揺れる。だから1回を信じず、たくさん回して平均する。これが以降すべての改善の土台になった。</p></div>
+  </div>
+
+  <div class="detail-content" data-detail="5">
+    <p class="d-lead">「手がかりを増やせば精度が上がる」という直感を、測って裏切られた。</p>
+    <div class="d-block problem"><span class="dl">困りごと</span><p>部屋の甲板・運賃ビン・年齢ビン等を7個追加 → 正直CVは動かず、<b>むしろ悪化</b>（gapが0.095→0.116に拡大）。</p></div>
+    <div class="d-block insight"><span class="dl">気づき</span><p>891行と小さいデータでは、追加特徴がノイズを拾って過学習を増やすだけ。特徴量は「足したら効く」ではなく<b>「測って効いたものだけ残す」</b>。汎用特徴はSex/Pclassの焼き直しで新情報がない。</p></div>
+  </div>
+
+  <div class="detail-content" data-detail="6">
+    <p class="d-lead">過学習そのものを減らしにいった。</p>
+    <div class="d-block example"><span class="dl">具体例</span><p>ハイパラを250通り自動探索＋7モデル比較＋アンサンブル。過学習gapを <span class="code">0.095 → 0.044</span> に半減。public は <span class="code">0.758 → 0.763</span>。</p>
+      <div class="vs">
+        <div class="bad"><div class="h">LightGBM単体</div>CV高め・gap大 → 本番 0.756</div>
+        <div class="ok"><div class="h">アンサンブル</div>CVほぼ同・gap小 → 本番 0.763</div>
+      </div></div>
+    <div class="d-block insight"><span class="dl">気づき</span><p>本番を当てたのは「CVの高さ」ではなく<b>「gapの小ささ」</b>。丸暗記を減らすと本番で落ちにくい、が実際のリーダーボードで証明された。</p></div>
+  </div>
+
+  <div class="detail-content" data-detail="7">
+    <p class="d-lead">gender の壁を破る、唯一の本当に新しい情報を足した。</p>
+    <div class="d-block problem"><span class="dl">困りごと</span><p>特徴量は全部「本人の属性」。「女性は生存」「男性は死亡」の<b>例外</b>を当てられない。</p></div>
+    <div class="d-block example"><span class="dl">具体例</span><p>「同じ家族・グループの<b>他人の生死</b>」を特徴量化(1=誰か生存/0=誰か死亡/0.5=不明)。家族全滅の女性は死、家族生還の男性は生、という例外を拾える。honest CV <span class="code">0.848</span>、public <span class="code">0.780</span> で gender の壁(0.766)を突破。</p></div>
+    <div class="d-block insight"><span class="dl">気づき</span><p>リーク厳禁。各人の値は「自分以外＆答えを知ってる人」だけから作り、CVでは毎foldで学習fold側の正解だけで作り直した。本人の列からは作れない＝これだけが"新情報"だった。</p></div>
+  </div>
+
+  <div class="detail-content" data-detail="8">
+    <p class="d-lead">さらなる特徴量改善を試したが、すべて頭打ちだった。</p>
+    <div class="d-block example"><span class="dl">具体例</span><p>子ども/母親/大家族フラグ、FamilySurvの連続値化、女性子ども限定(WCG)、グループ連結 ── どれも正直CVは <span class="code">0.845〜0.848</span> でブレ幅の中。誤差レベル。</p></div>
+    <div class="d-block insight"><span class="dl">気づき</span><p>「他人の生死」という新情報はシンプル版で搾り尽くしていた。決定木は既存特徴の言い換えを自分で作れるので無意味。<b>「もう伸びない」と見極める引き際</b>もML成果のひとつ。</p></div>
+  </div>
+
+  <div class="detail-content" data-detail="9">
+    <p class="d-lead">なぜモデルではなくCSVを提出するのか、を腑に落とした。</p>
+    <div class="d-block example"><span class="dl">具体例</span><p>採点されるのは<b>答え（予測のCSV）</b>だけ。test.csvには正解(Survived)が無いので学習できない。もし答えがあれば学習すら不要で1.000＝<b>だから隠されている</b>。全員"1"にしても約0.38しか当たらない（Survivedは予測であって正解フラグではない）。</p></div>
+    <div class="d-block analogy"><span class="dl">たとえ</span><p>提出するのは<b>答案用紙</b>。脳みそ(モデル)も勉強ノートも出さない。先生は答えだけ採点し、どう解いたかは問わない。</p></div>
+    <div class="d-block insight"><span class="dl">気づき</span><p>MLの価値は生の正解率ではなく<b>「何も考えないやり方より何点上か」</b>で測る。62%(全員死亡)→76.6%(性別ルール)→78%(ML)。MLの真の貢献は、ルールで取れない最後の数%＝例外を拾うこと。</p></div>
+  </div>
+
+  <div class="detail-content" data-detail="10">
+    <p class="d-lead">最後に、複雑さを削ってシンプルにした。</p>
+    <div class="d-block example"><span class="dl">具体例</span><p>アンサンブル(CV 0.848 / gap 0.043)を <b>LightGBM単体</b>(CV 0.844 / gap 0.062)に戻して提出 → public <span class="code">0.78708</span> で自己ベスト。アンサンブル0.780を上回ったが、差は<b>418人中3人</b>＝ノイズの範囲。</p></div>
+    <div class="d-block insight"><span class="dl">気づき</span><p>2つは実質互角。なら<b>簡単な方が正解</b>（オッカムの剃刀）。public自体も1回ぶんの模試なので、0.007差を実力差と読まない——これは序盤の「当たりくじCV」と同じ罠。</p></div>
+  </div>
+
+</div>
+
+<script>
+  (function(){
+    var modal = document.getElementById('modal');
+    var mbody = modal.querySelector('.modal-body');
+    var mnum  = modal.querySelector('.mnum');
+    var mtitle= modal.querySelector('.mtitle');
+
+    function openStep(step){
+      var n = step.getAttribute('data-step');
+      var d = document.querySelector('.detail-content[data-detail="'+n+'"]');
+      if(!d) return;
+      mnum.textContent = n;
+      mtitle.textContent = step.querySelector('h3').textContent;
+      mbody.innerHTML = d.innerHTML;
+      mbody.scrollTop = 0;
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden','false');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal(){
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+    }
+
+    var steps = document.querySelectorAll('.step');
+    for(var i=0;i<steps.length;i++){
+      (function(step){
+        step.querySelector('.card').addEventListener('click', function(){ openStep(step); });
+      })(steps[i]);
+    }
+    modal.querySelector('.modal-close').addEventListener('click', closeModal);
+    modal.querySelector('.modal-backdrop').addEventListener('click', closeModal);
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
+  })();
+</script>
+
+</body>
+</html>
